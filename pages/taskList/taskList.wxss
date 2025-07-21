@@ -1,0 +1,120 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #a0d8ef;
+  padding: 20rpx;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.profile-card {
+  background-color: #fff;
+  width: 90%;
+  border-radius: 15rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+  margin-bottom: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-placeholder {
+  width: 100rpx;
+  height: 100rpx;
+  background-color: #ccc;
+  border-radius: 50rpx;
+  margin-bottom: 10rpx;
+}
+
+.profile-info {
+  text-align: center;
+}
+
+.name, .group {
+  font-size: 24rpx;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10rpx 0;
+}
+
+.score-value {
+  font-size: 52rpx;
+  font-weight: bold;
+}
+
+.score-label {
+  font-size: 22rpx;
+}
+
+.score-ranking {
+  font-size: 20rpx;
+  color: #007aff;
+  margin-top: 10rpx;
+}
+
+.task-title {
+  font-size: 28rpx;
+  margin-bottom: 20rpx;
+  color: #333;
+  align-self: flex-start;
+  padding-left: 20rpx;
+}
+
+.task-list {
+  width: 100%;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10rpx 0;
+  padding: 50rpx; /* 增加内边距以增加高度 */
+  background-color: #fff;
+  border-radius: 10rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.task-image-placeholder {
+  width: 100rpx;
+  height: 100rpx;
+  background-color: #ccc;
+  border-radius: 50rpx;
+  margin-right: 10rpx;
+}
+
+.task-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.task-name {
+  font-size: 20rpx;
+  font-weight: bold;
+}
+
+.task-desc {
+  font-size: 18rpx;
+  color: #666;
+}
+
+.button {
+  background-color: #fff;
+  border-radius: 5rpx;
+  padding: 10rpx 15rpx;
+  font-size: 18rpx;
+  color: #007aff;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+}

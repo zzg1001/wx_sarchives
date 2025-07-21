@@ -1,0 +1,24 @@
+<view class="container">
+  <view class="profile-card">
+    <image class="avatar" src="/path/to/avatar.png" />
+    <view class="profile-info">
+      <text class="name">XX 小哥</text>
+      <text class="group">XXX小组</text>
+    </view>
+    <view class="score">
+      <text class="score-value">200</text>
+      <text class="score-label">积分</text>
+    </view>
+    <text class="score-ranking">积分排行榜 ></text>
+  </view>
+  <text class="exchange-title">积分兑换：</text>
+  <view class="exchange-list">
+    <view class="exchange-item" wx:for="{{items}}" wx:key="id">
+      <image class="item-image" src="{{item.image}}" />
+      <view class="item-info">
+        <text class="required-score">需要积分：{{item.requiredScore}}分</text>
+        <button class="button">积分不足 ></button>
+      </view>
+    </view>
+  </view>
+</view>

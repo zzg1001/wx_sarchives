@@ -1,0 +1,26 @@
+<view class="container">
+  <image class="header-image" src="/static/images/1.png" />
+  <text class="title">排行榜</text>
+  <view class="tabs">
+    <text class="tab {{activeTab === 'personal' ? 'active' : ''}}" bindtap="switchTab" data-tab="personal" >个人排名</text>
+    <text class="tab {{activeTab === 'team' ? 'active' : ''}}" bindtap="switchTab" data-tab="team">支部排名</text>
+  </view>
+  <view class="ranking-list" wx:if="{{activeTab === 'personal'}}">
+    <view class="ranking-item" wx:for="{{personalRankings}}" wx:key="index">
+      <!-- <image class="medal" src="{{item.medal}}" wx:if="{{item.medal}}" /> -->
+      <!-- <text class="rank" wx:if="{{!item.medal}}">{{item.rank}}</text> -->
+      <text class="rank" >{{item.rank}}</text>
+      <text class="name">{{item.name}}</text>
+      <text class="score">{{item.score}}分</text>
+    </view>
+  </view>
+  <view class="ranking-list" wx:if="{{activeTab === 'team'}}">
+    <view class="ranking-item" wx:for="{{teamRankings}}" wx:key="index">
+      <!-- <image class="medal" src="{{item.medal}}" wx:if="{{item.medal}}" /> -->
+      <!-- <text class="rank" wx:if="{{!item.medal}}">{{item.rank}}</text> -->
+     <text class="rank" >{{item.rank}}</text>
+      <text class="name">{{item.name}}</text>
+      <text class="score">{{item.score}}分</text>
+    </view>
+  </view>
+</view>

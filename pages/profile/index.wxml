@@ -17,15 +17,18 @@
     <view class="card">
       <view class="title">基本信息</view>
       <view class="row"><text class="label">姓名</text><text class="value">{{myInfo.name}}</text></view>
+      <view class="row"><text class="label">性别</text><text class="value">{{myInfo.sex}}</text></view>
       <view class="row"><text class="label">出生年月</text><text class="value">{{myInfo.birth}}</text></view>
       <view class="row"><text class="label">手机</text><text class="value">{{myInfo.phone}}</text></view>
       <view class="row"><text class="label">邮箱</text><text class="value">{{myInfo.email}}</text></view>
     </view>
     <view class="card">
       <view class="title">组织与职务</view>
-      <view class="row"><text class="label">组织</text><text class="value">{{myInfo.company}}</text></view>
+      <view class="row"><text class="label">民盟：组织</text><text class="value">{{myInfo.company}}</text></view>
+      <view class="row"><text class="label">民盟：职务/职称</text><text class="value">{{myInfo.title}}</text></view>
       <view class="row"><text class="label">职务/职称</text><text class="value">{{myInfo.title}}</text></view>
     </view>
+
   </scroll-view>
 
   <!-- 下属成员面板（领导专属） -->

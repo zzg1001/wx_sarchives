@@ -26,6 +26,14 @@
         <input value="{{form.name}}" bindinput="onInput" data-field="name" placeholder="请输入姓名" />
       </view>
 
+      <picker mode="selector" range="{{['男', '女']}}" value="0">
+        <view class="cell required">
+          <text class="label">性别</text>
+          <text class="value">男</text>
+          <text class="iconfont icon-right"></text>
+        </view>
+      </picker>
+
       <picker mode="date" fields="month" value="{{form.birth}}" bindchange="onDateChange">
         <view class="cell required">
           <text class="label">出生年月</text>
@@ -50,7 +58,7 @@
       </view>
     </view>
 
-    <!-- 工作与组织 -->
+    <!-- 内部工作与组织 -->
     <view class="card">
       <view class="card-title">工作与组织</view>
 
@@ -65,6 +73,12 @@
 
       <!-- 职务/职称（手填） -->
       <view class="cell">
+        <text class="label">民盟:职务</text>
+        <input value="{{form.title}}" bindinput="onInput" data-field="title" placeholder="请填写职务或职称" />
+      </view>
+
+          <!-- 职务/职称（手填） -->
+          <view class="cell">
         <text class="label">职务/职称</text>
         <input value="{{form.title}}" bindinput="onInput" data-field="title" placeholder="请填写职务或职称" />
       </view>
@@ -74,6 +88,7 @@
         <input value="{{form.companyName}}" bindinput="onInput" data-field="companyName" placeholder="如：XX公司/机构" />
       </view>
     </view>
+
 
     <!-- 个人标签 -->
     <view class="card">
@@ -94,6 +109,6 @@
 
   <!-- 悬浮提交 -->
   <view class="float-footer">
-    <button class="btn-submit" bindtap="submit" disabled="{{!canSubmit}}">提交并等待审批</button>
+    <button class="btn-submit" bindtap="submit" disabled="{{canSubmit}}">提交并等待审批</button>
   </view>
 </view>

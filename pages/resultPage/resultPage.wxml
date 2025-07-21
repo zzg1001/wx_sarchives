@@ -1,0 +1,23 @@
+<view class="container">
+  <!-- <image class="header-image" src="/images/your-character.png" /> -->
+  <text class="title">每天问答</text>
+  <view class="result-table">
+    <text class="subtitle">正确答案</text>
+    <view class="table">
+      <view class="table-row header">
+        <text class="table-cell">题目</text>
+        <text class="table-cell">正确答案</text>
+        <text class="table-cell">您的答案</text>
+        <text class="table-cell">结果</text>
+      </view>
+      <view class="table-row" wx:for="{{results}}" wx:key="index">
+        <text class="table-cell">{{item.question}}</text>
+        <text class="table-cell">{{item.correct}}</text>
+        <text class="table-cell" style="color:{{item.result? 'green':'red'}};">{{item.answer}}</text>
+        <text class="table-cell" style="color:{{item.result? 'green':'red'}};">{{item.result? '✔':'✘'}}</text>
+      </view>
+    </view>
+    <text class="score">{{score>0?'恭喜! ':'抱歉... '}}您获取了 {{score}} 积分{{score>0?'. ':', 请继续努力.'}}</text>
+    <button class="back-button" bindtap="goBack">回到首页</button>
+  </view>
+</view>

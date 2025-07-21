@@ -1,0 +1,23 @@
+<view class="container">
+  <swiper class="header" autoplay="true" interval="3000" duration="500" circular="true">
+    <swiper-item>
+      <view class="banner-placeholder">111</view>
+    </swiper-item>
+    <swiper-item>
+      <view class="banner-placeholder">222</view>
+    </swiper-item>
+    <swiper-item>
+      <view class="banner-placeholder">333</view>
+    </swiper-item>
+  </swiper>
+  
+  <view class="announcement">
+    <text class="announcement-title_1">信息</text>
+    <text class="announcement-title_2">公告</text>
+    <text class="announcement-content"> 知识竟赛已结束！现在可以自由答题啦!!</text>
+  </view>  
+  <view class="services">
+    <view class="service-item" bindtap="navigateToPesonInfo">通讯录</view>
+    <view class="service-item" bindtap="navigateToQa">趣答题</view>
+  </view>
+</view>

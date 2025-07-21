@@ -1,0 +1,97 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #a0d8ef;
+  height: 100vh;
+  padding: 20px;
+}
+
+.character {
+  width: 100px;
+  height: auto;
+  margin-top: 20px;
+}
+
+.title {
+  font-size: 28px;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.profile-card {
+  background-color: #fff;
+  width: 90%;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  margin-bottom: 10px;
+}
+
+.profile-info {
+  text-align: center;
+}
+
+.name, .group {
+  font-size: 20px;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.score-value {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.score-label {
+  font-size: 18px;
+}
+
+.score-ranking {
+  font-size: 16px;
+  color: #007aff;
+  margin-top: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 20px 0;
+}
+
+.button {
+  flex: 1;
+  margin: 0 10px;
+  padding: 10px 0;
+  background-color: #fff;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.new-icon {
+  width: 70px;
+  height: auto;
+  margin-top: 20px;
+}
+.arrow {
+  font-size: 18px;
+  color: #64bbcf;
+}

@@ -1,23 +1,45 @@
 <view class="container">
-  <swiper class="header" autoplay="true" interval="3000" duration="500" circular="true">
-    <swiper-item>
-      <view class="banner-placeholder">111</view>
-    </swiper-item>
-    <swiper-item>
-      <view class="banner-placeholder">222</view>
-    </swiper-item>
-    <swiper-item>
-      <view class="banner-placeholder">333</view>
-    </swiper-item>
-  </swiper>
-  
-  <view class="announcement">
-    <text class="announcement-title_1">信息</text>
-    <text class="announcement-title_2">公告</text>
-    <text class="announcement-content"> 知识竟赛已结束！现在可以自由答题啦!!</text>
-  </view>  
-  <view class="services">
-    <view class="service-item">通讯录</view>
-    <view class="service-item">趣答题</view>
+  <view class="banner"  wx:if="{{showBanner}}" >
+  🎉 知识竞赛已结束，现在可以自由答题！
   </view>
+  <view class="tip-btn" wx:for="{{buttons}}" wx:key="index" bindtap="navigateToPage" data-index="{{index}}">
+    <view class="button-container">
+      <view class="button">
+        <image class="icon" src="{{item.icon}}" />
+        <text class="text">{{item.text}}</text>
+      </view>
+      <view wx:if="{{index === nowSelect}}" class="tip">{{tipText}}</view>
+      <text class="arrow">></text>
+    </view>
+  </view>
+  <form bindsubmit="onLogin" >
+<!-- #region -->
+  <view wx:if="{{!loginSate}}">
+    <view class="login-bg">
+      <view class="login-card">
+        <view class="title">用户授权</view>
+        <view wx:if="{{nickName !== null}}">
+          <view class="userInfo">
+            <span>名称: </span>
+            <span style="margin-left: 30px;">{{nickName}}</span>
+          </view>
+        </view>
+        <view wx:else>
+          <input type="nickname"  class="custom-btn mybtn" bindblur="getName"
+           placeholder="名称（必选）" />
+        </view>
+        <view wx:if="{{avatarUrl !== null}}">
+          <view class="userInfo">
+            <span style="margin-right: 16px;">头像:</span>
+            <image src="{{avatarUrl}}" style="width: 45px; height: 45px; border-radius: 5px;" />
+          </view>
+        </view>
+        <view wx:else>
+          <button open-type="chooseAvatar" bindchooseavatar="getAvatar">头像（必选）:</button>
+        </view>
+        <button class="login-btn"  formType="submit" >授权登录</button>
+      </view>
+    </view>
+  </view>
+</form>
 </view>

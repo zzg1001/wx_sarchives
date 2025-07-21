@@ -125,6 +125,7 @@ Page({
       avatarUrl: '/pages/image/mm.png',
       name: '张三',
       birth: '1990-05',
+      sex:'男',
       phone: '13800138000',
       email: 'zhangsan@test.com',
       company: '中共XX市委',

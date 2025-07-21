@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="header">
+    <image class="header-image" src="/static/images/1.png" />
+    <text class="title">我的支部</text>
+  </view>
+  <view class="content">
+    <text class="rules-title">支部规则</text>
+    <text class="rules-text">
+       1.比赛已经结束啦！现在小程序仅供娱乐。
+       2.每天一次答题，尽情享受答题的乐趣吧！
+    </text>
+  </view>
+  <view class="button-col">
+     <view  class="button-group" >
+      <picker bindchange="bindPickerChange"  value="{{index}}" range="{{array}}">
+        <button class="picker-button">
+          支部:
+          <view class="picker-value-wrapper">
+            <span style="color:blue;font-weight: bold;">{{array[index]}}</span>
+            <image class="arrow-icon" src="/static/images/select.png"></image>
+          </view>
+        </button>
+      </picker>
+    </view>
+    <view class="license-error" wx:if="{{licensePlateError}}">{{licensePlateError}}</view>
+    <view class="button-row">
+        <view class="info" style="font-size: 15px; text-align: center;">{{groupName || '选择支部'}}：({{groupUserCount}})人数</view>      
+        <view class="refresh-btn" bindtap="reFreshPage">刷新</view>
+</view>
+  </view>
+
+</view>

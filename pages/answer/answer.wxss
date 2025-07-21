@@ -1,0 +1,123 @@
+.container {
+  background-color: #7ec8e3;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  box-sizing: border-box;
+  position: relative; /* 添加相对定位 */
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 20rpx;
+  width: 90%; /* 与下面的元素对齐 */
+  max-width: 600rpx;
+  padding-left: 20rpx;
+}
+
+.header-image {
+  width: 183rpx;
+  height: 170rpx;
+  margin-right: 10rpx;
+}
+
+.title {
+  font-size: 50rpx; /* 增大字体 */
+  color: #fff;
+}
+
+.question-list {
+  background-color: #fff;
+  border-radius: 10rpx;
+  padding: 55rpx;
+  box-shadow: 0 2rpx 5rpx rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600rpx;
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 30rpx;
+  transition: transform 0.3s ease;
+}
+
+.question {
+  margin-bottom: 23rpx;
+}
+
+.question-text {
+  font-size: 30rpx;
+  margin-bottom: 10rpx;
+}
+
+.options {
+  margin-top: 10px;
+  margin-left: 20rpx;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.radio {
+  width: 20px; /* 固定宽度 */
+  height: 20px; /* 固定高度 */
+  margin-right: 10px;
+  display: inline-block; /* 确保单选按钮不会变形 */
+}
+
+.option-text {
+  white-space: normal; /* 允许文字自动换行 */
+  flex: 1; /* 占据剩余空间 */
+  word-wrap: break-word; /* 确保文字在必要时换行 */
+}
+
+.correct-mark{
+  color: red; /* 设置文字颜色为红色 */
+  background-color: #ffe0e0; /* 浅红色背景 */
+}
+
+.submit-button {
+  background-color: #fff;
+  border-radius: 10rpx;
+  padding: 20rpx 20rpx;
+  box-shadow: 0 2rpx 5rpx rgba(0, 0, 0, 0.1);
+  font-size: 30rpx;
+  color: #000;
+  width: 90%;
+  max-width: 600rpx;
+  margin-top: 5px;
+  margin-bottom: 20px; /* 设置距离底部的距离 */
+}
+
+.zoomed-question-list {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 100%;
+  z-index: 11; /* 放大后的 question-list 容器层级高于蒙版 */
+  background-color: #fff;
+  border-radius: 10rpx;
+  padding: 55rpx;
+  box-shadow: 0 2rpx 5rpx rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* 允许滚动 */
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色蒙版 */
+  z-index: 10; /* 蒙版的层级 */
+}
+
+.option.error {
+  color: red;
+}

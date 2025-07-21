@@ -76,22 +76,27 @@ Page({
 
   /* 提交 */
   async submit() {
-    if (!this.validate()) return;
-    wx.showLoading({ title: '提交中' });
-    try {
-      await wx.cloud.callFunction({
-        name: 'submitRegister',
-        data: {
-          ...this.data.form,
-          avatarUrl: this.data.avatarUrl,
-          status: 'pending'  // 等待审批
-        }
-      });
-      wx.hideLoading();
-      wx.redirectTo({ url: '/pages/status/status' });
-    } catch (e) {
-      wx.hideLoading();
-      wx.showToast({ title: '提交失败，请重试', icon: 'none' });
-    }
+
+    wx.navigateTo({
+      url: `/pages/profile/index`,
+    })
+
+    // if (!this.validate()) return;
+    // wx.showLoading({ title: '提交中' });
+    // try {
+    //   await wx.cloud.callFunction({
+    //     name: 'submitRegister',
+    //     data: {
+    //       ...this.data.form,
+    //       avatarUrl: this.data.avatarUrl,
+    //       status: 'pending'  // 等待审批
+    //     }
+    //   });
+    //   wx.hideLoading();
+    //   wx.redirectTo({ url: 'pages/profile/index' });
+    // } catch (e) {
+    //   wx.hideLoading();
+    //   wx.showToast({ title: '提交失败，请重试', icon: 'none' });
+    // }
   }
 });

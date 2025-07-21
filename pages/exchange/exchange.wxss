@@ -1,0 +1,107 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #a0d8ef; /* 调整背景颜色 */
+  padding: 20px;
+  width: 100%;
+}
+
+.profile-card {
+  background-color: #fff;
+  width: 90%;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  margin-bottom: 10px;
+}
+
+.profile-info {
+  text-align: center;
+}
+
+.name, .group {
+  font-size: 20px;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.score-value {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.score-label {
+  font-size: 18px;
+}
+
+.score-ranking {
+  font-size: 16px;
+  color: #007aff;
+  margin-top: 10px;
+}
+
+.exchange-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  align-self: flex-start;
+}
+
+.exchange-list {
+  width: 100%;
+}
+
+.exchange-item {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.item-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  margin-right: 10px;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.required-score {
+  font-size: 16px;
+  color: #666;
+}
+
+.button {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 16px;
+  color: #007aff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
