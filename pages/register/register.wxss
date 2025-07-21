@@ -1,0 +1,118 @@
+/* pages/register/register.wxss */
+page {
+  background: #F7F8FA;
+  font-size: 32rpx;
+  color: #1F2937;
+}
+
+/* 自定义导航 */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--status-bar-height) 40rpx 28rpx;
+  background: linear-gradient(135deg, #6366F1, #A5B4FC);
+  color: #fff;
+}
+.nav-title { font-size: 36rpx; font-weight: 600; }
+.nav-save { font-size: 28rpx; }
+
+/* 主滚动区 */
+.main { padding: 40rpx 32rpx 160rpx; }
+
+/* 证件照卡片 */
+.photo-card {
+  position: relative;
+  margin: 0 auto 60rpx;
+  width: 220rpx;
+  height: 280rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0,0,0,.08);
+  overflow: hidden;
+}
+.id-photo {
+  width: 100%;
+  height: 100%;
+}
+.photo-mask {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.45);
+  color: #fff;
+  font-size: 24rpx;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.photo-card:active .photo-mask { opacity: 1; }
+
+/* 通用卡片 */
+.card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,.05);
+}
+.card-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  margin-bottom: 32rpx;
+}
+
+/* 单元行 */
+.cell {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #E5E7EB;
+}
+.cell:last-child { border-bottom: none; }
+.label {
+  width: 200rpx;
+  font-size: 30rpx;
+  color: #1F2937;
+}
+.label.required::after { content: '*'; color: #EF4444; margin-left: 6rpx; }
+.value { flex: 1; font-size: 30rpx; color: #6B7280; }
+input, textarea { flex: 1; font-size: 30rpx; color: #1F2937; }
+textarea {
+  width: 100%;
+  height: 120rpx;
+  padding: 20rpx 0;
+  border: none;
+  resize: none;
+}
+
+/* 悬浮底部 */
+.float-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 40rpx 40rpx;
+  background: #fff;
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,.05);
+}
+.btn-submit {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #6366F1, #A5B4FC);
+  box-shadow: 0 8rpx 20rpx rgba(99,102,241,.3);
+}
+.btn-submit[disabled] {
+  background: #D1D5DB;
+  box-shadow: none;
+}
+
+/* iconfont 简易箭头 */
+.icon-right::before { content: '〉'; font-size: 24rpx; color: #9CA3AF; }

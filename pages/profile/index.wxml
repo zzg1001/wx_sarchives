@@ -1,0 +1,85 @@
+<view class="container">
+  <!-- 切换按钮 -->
+  <view class="tabs">
+    <view class="tab {{currentTab==='my' ? 'active' : ''}}" bindtap="switchTab" data-tab="my">我的</view>
+    <view wx:if="{{role==='leader'|| role==='member'}}" class="tab {{currentTab==='sub' ? 'active' : ''}}" bindtap="switchTab" data-tab="sub">盟员</view>
+    <view wx:if="{{role==='leader'}}" class="tab {{currentTab==='approval' ? 'active' : ''}}" bindtap="switchTab" data-tab="approval">
+      审批
+      <view wx:if="{{approvalCount > 0}}" class="approval-badge">{{approvalCount}}</view>
+    </view>
+  </view>
+
+  <!-- 我的档案面板 -->
+  <scroll-view wx:if="{{currentTab==='my'}}" class="panel" scroll-y>
+    <view class="photo-card">
+      <image class="id-photo" src="{{myInfo.avatarUrl}}" mode="aspectFill"/>
+    </view>
+    <view class="card">
+      <view class="title">基本信息</view>
+      <view class="row"><text class="label">姓名</text><text class="value">{{myInfo.name}}</text></view>
+      <view class="row"><text class="label">出生年月</text><text class="value">{{myInfo.birth}}</text></view>
+      <view class="row"><text class="label">手机</text><text class="value">{{myInfo.phone}}</text></view>
+      <view class="row"><text class="label">邮箱</text><text class="value">{{myInfo.email}}</text></view>
+    </view>
+    <view class="card">
+      <view class="title">组织与职务</view>
+      <view class="row"><text class="label">组织</text><text class="value">{{myInfo.company}}</text></view>
+      <view class="row"><text class="label">职务/职称</text><text class="value">{{myInfo.title}}</text></view>
+    </view>
+  </scroll-view>
+
+  <!-- 下属成员面板（领导专属） -->
+  <scroll-view wx:if="{{currentTab==='sub'}}" class="panel sub-panel" scroll-y>
+    <view class="search-bar">
+      <input type="text" placeholder="搜索姓名..." bindinput="onSearchInput" value="{{searchQuery}}" />
+      <view wx:if="{{searchQuery}}" class="clear-button" bindtap="clearSearch">
+        <text class="clear-text">X</text>
+      </view>
+    </view>
+    <block wx:for="{{filteredSubList}}" wx:key="id">
+      <view class="sub-item-group">
+        <view class="sub-item" bindtap="toggleSubDetail" data-id="{{item.id}}">
+          <text class="name">{{item.name}}</text>
+          <text class="company">{{item.company}}</text>
+          <text class="arrow">{{item.showDetails ? 'v' : '>'}}</text>
+        </view>
+        <view wx:if="{{item.showDetails}}" class="sub-detail">
+          <view class="sub-photo-card">
+            <image class="sub-id-photo" src="{{item.avatarUrl}}" mode="aspectFill"/>
+          </view>
+          <view class="sub-card">
+            <view class="title">详细信息</view>
+            <view class="row"><text class="label">姓名</text><text class="value">{{item.name}}</text></view>
+            <view class="row"><text class="label">组织</text><text class="value">{{item.company}}</text></view>
+            <view class="row"><text class="label">职务/职称</text><text class="value">{{item.title}}</text></view>
+            <view class="row"><text class="label">联系方式</text><text class="value">{{item.phone}}</text></view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 审批面板（领导专属） -->
+  <scroll-view wx:if="{{currentTab==='approval' && role==='leader'}}" class="panel approval-panel" scroll-y>
+    <!-- 审批列表 -->
+    <block wx:for="{{approvalList}}" wx:key="id">
+      <view class="approval-item" bindtap="toggleDetails" data-index="{{index}}" >
+        <view class="applicant-info">
+          <text class="applicant-name">{{item.name}}</text>
+          <text class="applicant-role">申请成为：{{item.role}}</text>
+          <text class="arrow">{{item.showDetails ? 'v' : '>'}}</text>
+        </view>
+        <view class="details" wx:if="{{item.showDetails}}">
+          <view class="detail-item">姓名：{{item.name}}</view>
+          <view class="detail-item">申请成为：{{item.role}}</view>
+          <view class="detail-item">申请时间：{{item.applyTime}}</view>
+          <view class="detail-item">联系方式：{{item.contact}}</view>
+          <view class="actions">
+            <button bindtap="approve" data-index="{{index}}">同意</button>
+            <button bindtap="reject" data-index="{{index}}">拒绝</button>
+          </view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>
