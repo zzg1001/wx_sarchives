@@ -39,7 +39,7 @@ Page({
     ,(err)=>{
         wx.setStorageSync('fail', true)
         wx.navigateTo({
-          url: '/pages/index/index?registerStat=1'
+          url: '/pages/index/index'
         });
  });
 

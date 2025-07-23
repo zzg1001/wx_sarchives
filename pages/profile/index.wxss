@@ -1,6 +1,6 @@
 /* 页面整体样式 */
 page {
-  background: #EFF3F6; /* 调整背景颜色以更融洽 */
+  background: #7ec8e3; /* 调整背景颜色以更融洽 */
   font-size: 16px; /* 调整字体大小 */
   color: #333333; /* 调整字体颜色 */
 }

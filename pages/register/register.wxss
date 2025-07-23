@@ -1,24 +1,15 @@
 /* pages/register/register.wxss */
-page {
-  background: #F7F8FA;
+.page {
+  background: #7ec8e3;
   font-size: 32rpx;
   color: #1F2937;
 }
-
-/* 自定义导航 */
-.nav-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--status-bar-height) 40rpx 28rpx;
-  background: linear-gradient(135deg, #6366F1, #A5B4FC);
-  color: #fff;
+.red-star {
+  color: red;
 }
-.nav-title { font-size: 36rpx; font-weight: 600; }
-.nav-save { font-size: 28rpx; }
-
 /* 主滚动区 */
-.main { padding: 40rpx 32rpx 160rpx; }
+.main { padding: 40rpx 32rpx 160rpx;
+box-sizing: border-box; }
 
 /* 证件照卡片 */
 .photo-card {
@@ -30,6 +21,7 @@ page {
   border-radius: 16rpx;
   box-shadow: 0 8rpx 20rpx rgba(0,0,0,.08);
   overflow: hidden;
+
 }
 .id-photo {
   width: 100%;

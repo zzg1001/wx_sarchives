@@ -1,10 +1,5 @@
 <!-- register.wxml -->
 <view class="page">
-  <!-- 自定义导航 -->
-  <view class="nav-bar">
-    <text class="nav-title"></text>
-    <text class="nav-save" bindtap="saveDraft"></text>
-  </view>
 
   <!-- 主滚动区 -->
   <scroll-view class="main" scroll-y>
@@ -22,13 +17,13 @@
       <view class="card-title">基础信息</view>
 
       <view class="cell required">
-        <text class="label">姓名</text>
+        <text class="label"><text class="red-star">*</text>姓名</text>
         <input value="{{form.name}}" bindinput="onInput" data-field="name" placeholder="请输入姓名" />
       </view>
 
       <picker mode="selector" range="{{['男', '女']}}" value="0">
         <view class="cell required">
-          <text class="label">性别</text>
+          <text class="label"><text class="red-star">*</text>性别</text>
           <text class="value">男</text>
           <text class="iconfont icon-right"></text>
         </view>
@@ -36,14 +31,14 @@
 
       <picker mode="date" fields="month" value="{{form.birth}}" bindchange="onDateChange">
         <view class="cell required">
-          <text class="label">出生年月</text>
+          <text class="label"><text class="red-star">*</text>出生年月</text>
           <text class="value">{{form.birth || '请选择'}}</text>
           <text class="iconfont icon-right"></text>
         </view>
       </picker>
 
       <view class="cell">
-        <text class="label">手机</text>
+        <text class="label"><text class="red-star">*</text>手机</text>
         <input type="number" maxlength="11" value="{{form.phone}}" bindinput="onInput" data-field="phone" placeholder="11位手机号" />
       </view>
 
@@ -65,7 +60,7 @@
       <!-- 选择组织（必填，需审批） -->
       <picker mode="selector" range="{{orgList}}" value="{{orgIndex}}" bindchange="onOrgChange">
         <view class="cell required">
-          <text class="label">选择组织</text>
+          <text class="label"><text class="red-star">*</text>选择组织</text>
           <text class="value">{{orgList[orgIndex] || '请选择'}}</text>
           <text class="iconfont icon-right"></text>
         </view>

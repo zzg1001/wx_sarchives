@@ -1,13 +1,14 @@
 <view class="container">
   <swiper class="header" autoplay="true" interval="3000" duration="500" circular="true">
     <swiper-item>
-      <view class="banner-placeholder">111</view>
+    
+     <view class="banner-placeholder"> <image src="/static/images/lb1.jpg"/></view>
     </swiper-item>
     <swiper-item>
-      <view class="banner-placeholder">222</view>
+      <view class="banner-placeholder"> <image src="/static/images/lb2.jpg"/></view>
     </swiper-item>
     <swiper-item>
-      <view class="banner-placeholder">333</view>
+      <view class="banner-placeholder"> <image src="/static/images/lb3.jpg"/></view>
     </swiper-item>
   </swiper>
   
@@ -20,4 +21,6 @@
     <view class="service-item" bindtap="navigateToPesonInfo">通讯录</view>
     <view class="service-item" bindtap="navigateToQa">趣答题</view>
   </view>
-</view>
+  <login-popup login-state="{{loginState}}" bind:loginSuccess="handleLoginSuccess"></login-popup>
+  
+  </view>

@@ -1,18 +1,6 @@
-<view class="container">
-
-  <view class="tip-btn" wx:for="{{buttons}}" wx:key="index" bindtap="navigateToPage" data-index="{{index}}">
-    <view class="button-container">
-      <view class="button">
-        <image class="icon" src="{{item.icon}}" />
-        <text class="text">{{item.text}}</text>
-      </view>
-      <view wx:if="{{index === nowSelect}}" class="tip">{{tipText}}</view>
-      <text class="arrow">></text>
-    </view>
-  </view>
-  <form bindsubmit="onLogin" >
+<form bindsubmit="onLogin" >
 <!-- #region -->
-  <view wx:if="{{!loginSate}}">
+  <view  wx:if="{{!loginState}}" >
     <view class="login-bg">
       <view class="login-card">
         <view class="title">用户授权</view>
@@ -40,4 +28,3 @@
     </view>
   </view>
 </form>
-</view>

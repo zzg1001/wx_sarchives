@@ -12,13 +12,12 @@ Page({
     nickName: null,
     openName: null,
     avatarUrl: null,
-    loginSate: wx.getStorageSync('loginSate'),
+    loginSate: true,
     showLoadingFlag: false
   },
 
   onShow(){
     console.log(" =>onShow ")
-    this.showBanner()
     wx.login({
       success: (res) => {
         if (res.code) {
@@ -27,7 +26,6 @@ Page({
           app.wxRequest('POST', '/auth/login', obj, (res) => {
             if( res.statusCode != 200){
               wx.setStorageSync('fail', true)
-              wx.showToast({ title: '服务器响应超时，请稍后再试', icon: 'error', duration: 2000 });
               return;
             }
             const { code, content } =  res.data
@@ -74,18 +72,8 @@ Page({
     const that = this;
     console.log(registerStat)
     //是否注册
-    if(registerStat == 0){
-      that.setData({ 
-        loginSate: false 
-      })
-    }else{
-      that.setData({ 
-        loginSate: true 
-      })
-    }
-      wx.removeStorageSync("joinGroup")
+
       wx.removeStorageSync("token")
-      wx.removeStorageSync("fail")
   },
   chechAuth(url, index) {
     const joinGroup = wx.getStorageSync('joinGroup')
@@ -203,7 +191,6 @@ Page({
 
   
     const that = this;
-    wx.showLoading({ title: '正在请求授权' })
     wx.login({
       success: (res) => {
         const { openName, avatarUrl } = that.data
@@ -251,10 +238,5 @@ Page({
       }
     });
   },
-  showBanner() {
-    this.setData({ showBanner: true });
-    setTimeout(() => {
-      this.setData({ showBanner: false });
-    }, 3000); // 5秒后自动隐藏
-  }
+
 })
