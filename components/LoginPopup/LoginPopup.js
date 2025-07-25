@@ -26,7 +26,7 @@ Component({
       wx.removeStorageSync("token")
       const that = this;
       console.log("onLogin.....开始")
-      // wx.showLoading({ title: '正在请求授权' });
+       wx.showLoading({ title: '正在请求授权' });
       const { openName, avatarUrl } = that.data
       const nickName = openName
       console.log( `nickName:${nickName} && avatarUrl:${avatarUrl}`)
@@ -48,6 +48,7 @@ Component({
       wx.login({
         success: (result) => {
           const obj = {  ...loginInfo, code: result.code }
+          console.log("avatarUrl:"+obj.avatarUrl)
           app.wxUploadFile('POST', '/auth/register', obj,obj.avatarUrl, (res) => {
             const { code, content } = JSON.parse(res.data)
             console.log(`code:${code}  content:${content}  appId:${result.code} `)
@@ -69,8 +70,6 @@ Component({
                   });
                 },1000)
           })
-
-          
         }
       })
   },

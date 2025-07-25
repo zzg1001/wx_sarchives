@@ -1,22 +1,26 @@
 const app = getApp();
 Page({
   data: {
-    avatarUrl: '/static/images/2.png', // 默认证件照占位图
+    photo: '', // 默认证件照占位图
     orgList: [],            // 云端拉取的组织列表
-    orgIndex: -1,           // 选中组织的索引
+    orgIndex: 0,           // 选中组织的索引
+    orgIds:[],
+    sexOptions: ['男', '女'], // 性别选项
+    sexIndex: 0, // 默认选中第一个选项（"男"）
     form: {
       name: '',
       birth: '',
-      sex: '',
+      gender:'',
       phone: '',
-      officePhone: '',
-      email: '',
-      company: '',          // 选中的组织
-      companyName: '',      // 单位名称（可手填）
+      officePhone: '',       // 单位号码
+      email: '',             // 邮件
+      branch: '',           // 选中的组织
+      position:'',          // 盟内职务
+      organization: '',     // 单位名称（可手填）
       title: '',            // 职务/职称（手填）
-      skills: '',
-      hobbies: '',
-      other: ''
+      skills: '',           // 特长
+      hobbies: '',          // 兴趣爱好
+      other: ''             //其他
     }
   },
 
@@ -31,78 +35,26 @@ Page({
  
   },
   onShow() {
-   const token =  wx.getStorageSync('token')
-   console.log(`注册页：onShow token ${token}`)
-   if (!token) {
-            wx.login({
-              success: (res) => {
-                if(res.code){
-                  const obj = { code: res.code }
-                  this.onShowLogInfo(obj);
-                }else{
-             
-                }
-              }
-        })
-   }
-},
-onShowLogInfo(obj){
- 
-  app.wxRequest(
-    'POST',
-    '/auth/login', obj,
-    (res) => {
-        if( res.statusCode != 200){
-          wx.showToast({ title: '服务器响应超时，请稍后再试', icon: 'error', duration: 2000 });
-         }else{
-           console.log("res.data:"+ JSON.stringify(res.data))
-           const obje = JSON.stringify(res.data)
-          this.onShowLogTaken(obje);
-         }
-       },
-     (err)=>{
-      setTimeout(()=>{
-        wx.showToast({
-          title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
-          icon: 'none',
-          duration: 2000
-        })
-      },1000);
+    this.updateGroupList(); // 获取组队列表
+    const token = wx.getStorageSync('token')
+    console.log("入口的token:"+token)
+    app.verifyLogin('register')
+  },
 
-    })
-},
-onShowLogTaken(resData){
-  const { code, content } =  resData
-        if(code==200){
-            if(content){
-                const { token } =  JSON.stringify(content)
-                if(token){
-                  wx.setStorageSync('loginSate', true)
-                  wx.setStorageSync('token', token)
-                }else{
-                  wx.setStorageSync('loginSate', false)
-                  wx.setStorageSync('token', null)
-                  setTimeout(() => {
-                            wx.navigateTo({
-                              url: '/pages/home/index?registerStat=true'
-                            });
-                       }, 1000);
-                }
-            }
-          }else{
-            setTimeout(() => {
-                    wx.navigateTo({
-                      url: '/pages/home/index?registerStat=true'
-                    });
-              }, 1000);
-          }
-},
   /* 统一输入处理 */
   onInput(e) {
     const field = e.currentTarget.dataset.field;
     this.setData({ [`form.${field}`]: e.detail.value });
   },
-
+    /* 选择性别 */
+  onSexChange(e){
+    console.log( e.detail.value)
+    const { value } = e.detail; // 获取用户选择的索引
+    this.setData({
+      sexIndex: value[0] // 更新 sexIndex
+    });
+    this.setData({ 'form.gender':e.detail.value});
+  },
   /* 出生年月选择 */
   onDateChange(e) {
     this.setData({ 'form.birth': e.detail.value });
@@ -113,9 +65,10 @@ onShowLogTaken(resData){
     const idx = e.detail.value;
     this.setData({
       orgIndex: idx,
-      'form.company': this.data.orgList[idx]
+      'form.branch': this.data.orgIds[idx]
     });
   },
+
 
   /* 上传证件照 */
   chooseAvatar() {
@@ -125,10 +78,11 @@ onShowLogTaken(resData){
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
-        this.setData({ avatarUrl: res.tempFiles[0].tempFilePath });
+        this.setData({ photo: res.tempFiles[0].tempFilePath });
       }
     });
   },
+
 
   /* 保存草稿到本地 */
   saveDraft() {
@@ -138,20 +92,111 @@ onShowLogTaken(resData){
 
   /* 表单校验 */
   validate() {
-    const { name, birth, phone } = this.data.form;
-    if (!name|| !birth || !/^1\d{10}$/.test(phone) ) {
+    const { name, birth, phone,branch } = this.data.form;
+    const { photo } = this.data
+    if (!name|| !branch ||!birth || !/^1\d{10}$/.test(phone) ) {
       wx.showToast({ title: '请完善带 * 项正确填写', icon: 'none' });
       return false;
+    }else if(!photo){
+      wx.showToast({ title: '请上传头像', icon: 'none' });
+      return false;
+    }else{
+      return true;
     }
-    return true;
+   
   },
 
   /* 提交 */
   async submit() {
-    // if (!this.validate()) return;
+        if (this.validate()){
+          this.uploadUserInfo();
+        }else if(!this.validate()){
+          return;
+        }
+       
+    },
+    // 提交用户信息
+    uploadUserInfo(){
+      const token =  wx.getStorageSync('token')
+      if(token){
+         wx.login({
+          success: (res) => {
+           const code = res.code
+           this.userInfo(code);
+           }
+         });
+      }
+     
+    },
+    userInfo(code){
+    this.setData({ 'form.gender':this.data.form.gender||0});
+     const userInfo = {...this.data.form,code}
+     const photo = this.data.photo;
+     wx.showLoading({ title: '正在请求授权' });
+     console.log("提交:"+JSON.stringify(photo)+" 头像："+JSON.stringify( userInfo))
 
-      wx.navigateTo({
-        url: `/pages/profile/index`,
+      app.wxUploadFile('POST', '/member/edit', userInfo,photo, (res) => { 
+       // 跳转到查看页面
+       const data = JSON.parse(res.data)
+        this.navigateToProfile(data)
+      },
+      (err)=>{
+            wx.showToast({
+              title: '服务器响应异常：' +  JSON.stringify(err),
+              icon: 'none',
+              duration: 2000
+            })
+            wx.hideLoading();
       })
-    }
+      wx.hideLoading();
+    },
+    // 跳转到查看页面
+   navigateToProfile(relus){
+    const {code ,message} = relus
+    if(code == 200){
+      setTimeout(()=>{
+        wx.showToast({
+          title: '提交成功',
+          icon: 'success',
+          duration: 2000
+        });
+
+      },2000)
+    
+      wx.navigateTo({
+          url: `/pages/profile/index`,
+       })
+
+     }else{
+          setTimeout(()=>{
+                wx.showToast({
+                  title: JSON.stringify(message),
+                  icon: 'none',
+                  duration: 2000
+                })
+          },1000);
+     }
+
+   },
+     // 获取组队列表
+  updateGroupList: function () {
+    app.wxRequest("GET", "/ext/getGroupList", null, res => {
+      const { code, message, content } = res.data;
+      if (code === 200) {
+        const group = content.filter(item =>item.id>=46)
+        const groupId = [0, ...group.map(item =>item.id)];
+        const groupName = ["请选择", ...group.map(item =>item.groupName)];
+            this.setData({
+              orgList: groupName,
+              orgIds:groupId,
+              orgIndex: 0 // 设置默认索引
+            });
+        } else {
+              wx.showToast({ title: message || '加载失败', icon: 'none' });
+            }
+      },(err)=>{
+
+      });
+    },
 });
+

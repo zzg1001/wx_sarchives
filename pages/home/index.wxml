@@ -1,26 +1,41 @@
 <view class="container">
   <swiper class="header" autoplay="true" interval="3000" duration="500" circular="true">
     <swiper-item>
-    
-     <view class="banner-placeholder"> <image src="/static/images/lb1.jpg"/></view>
+      <view class="banner-placeholder">
+        <image src="/static/images/lb1.jpg"/>
+      </view>
     </swiper-item>
     <swiper-item>
-      <view class="banner-placeholder"> <image src="/static/images/lb2.jpg"/></view>
+      <view class="banner-placeholder">
+        <image src="/static/images/lb2.jpg"/>
+      </view>
     </swiper-item>
     <swiper-item>
-      <view class="banner-placeholder"> <image src="/static/images/lb3.jpg"/></view>
+      <view class="banner-placeholder">
+        <image src="/static/images/lb3.jpg"/>
+      </view>
     </swiper-item>
   </swiper>
   
   <view class="announcement">
     <text class="announcement-title_1">信息</text>
     <text class="announcement-title_2">公告</text>
-    <text class="announcement-content"> 知识竟赛已结束！现在可以自由答题啦!!</text>
+    <swiper class="announcement-swiper" autoplay="true" interval="3000" duration="500" circular="true" vertical="true">
+      <swiper-item>
+        <text class="announcement-content">知识竟赛已结束！现在可以自由答题啦!!</text>
+      </swiper-item>
+      <swiper-item>
+        <text class="announcement-content">欢迎使用我们的小程序，祝您使用愉快！</text>
+      </swiper-item>
+      <swiper-item>
+        <text class="announcement-content">新功能上线啦，快来体验吧！</text>
+      </swiper-item>
+    </swiper>
   </view>  
   <view class="services">
     <view class="service-item" bindtap="navigateToPesonInfo">通讯录</view>
     <view class="service-item" bindtap="navigateToQa">趣答题</view>
   </view>
   <login-popup login-state="{{loginState}}" bind:loginSuccess="handleLoginSuccess"></login-popup>
-  
-  </view>
+  <policy-modal bind:agree="handleAgree" bind:disagree="handleDisagree" visible="{{showModal}}"></policy-modal>
+</view>

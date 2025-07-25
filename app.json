@@ -2,17 +2,16 @@
   "pages": [
     "pages/home/index",
     "pages/index/index",
-    "pages/profile/index", 
+    "pages/profile/index",
     "pages/register/register",
     "components/LoginPopup/LoginPopup",
-
     "pages/answer/answer",
     "pages/resultPage/resultPage",
     "pages/rankingPage/rankingPage",
     "pages/myQuestions/myQuestions",
     "pages/exchange/exchange",
     "pages/taskList/taskList",
+    "components/policyModal/policyModal",
     "pages/signupPage/signupPage"
   ]
- 
 }

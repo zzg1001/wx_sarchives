@@ -18,8 +18,6 @@ Page({
       if (code === 200) {
         // 将“请选择”作为第一个选项
         const groupList = ["请选择", ...content.map(item => item.groupName)];
-    
-        
         // 检查用户是否已有组
         const userHasGroup = this.data.joinGroup && this.data.groupName;
         const defaultIndex = userHasGroup
@@ -67,9 +65,8 @@ Page({
           duration: 1000
         },3000)
       })
-    
       wx.navigateTo({
-        url: '/pages/index/index?registerStat=0'
+        url: '/pages/home/index?registerStat=ture'
       });
 
     }

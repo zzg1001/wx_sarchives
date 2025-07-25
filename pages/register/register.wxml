@@ -1,11 +1,11 @@
 <!-- register.wxml -->
 <view class="page">
-
+  <form bindsubmit="submit" >
   <!-- 主滚动区 -->
   <scroll-view class="main" scroll-y>
     <!-- 证件照 -->
     <view class="photo-card">
-      <image class="id-photo" src="{{avatarUrl}}" mode="aspectFill" />
+      <image class="id-photo" src="{{photo}}" mode="aspectFill" />
       <view class="photo-mask" bindtap="chooseAvatar">
         <text class="iconfont icon-camera"></text>
         <text class="mask-txt">上传证件照</text>
@@ -15,16 +15,14 @@
     <!-- 基础信息 -->
     <view class="card">
       <view class="card-title">基础信息</view>
-
       <view class="cell required">
         <text class="label"><text class="red-star">*</text>姓名</text>
         <input value="{{form.name}}" bindinput="onInput" data-field="name" placeholder="请输入姓名" />
       </view>
-
-      <picker mode="selector" range="{{['男', '女']}}" value="0">
+      <picker mode="selector" range="{{sexOptions}}" value="{{sexIndex}}" bindchange="onSexChange">
         <view class="cell required">
           <text class="label"><text class="red-star">*</text>性别</text>
-          <text class="value">男</text>
+          <text class="value">{{sexOptions[sexIndex]}}</text>
           <text class="iconfont icon-right"></text>
         </view>
       </picker>
@@ -48,7 +46,7 @@
       </view>
 
       <view class="cell">
-        <text class="label">E-mail</text>
+        <text class="label">邮箱</text>
         <input type="email" value="{{form.email}}" bindinput="onInput" data-field="email" placeholder="邮箱地址" />
       </view>
     </view>
@@ -56,20 +54,24 @@
     <!-- 内部工作与组织 -->
     <view class="card">
       <view class="card-title">工作与组织</view>
-
       <!-- 选择组织（必填，需审批） -->
       <picker mode="selector" range="{{orgList}}" value="{{orgIndex}}" bindchange="onOrgChange">
         <view class="cell required">
           <text class="label"><text class="red-star">*</text>选择组织</text>
-          <text class="value">{{orgList[orgIndex] || '请选择'}}</text>
+          <text class="value">{{orgList[orgIndex]}}</text>
           <text class="iconfont icon-right"></text>
         </view>
       </picker>
 
       <!-- 职务/职称（手填） -->
       <view class="cell">
-        <text class="label">民盟:职务</text>
-        <input value="{{form.title}}" bindinput="onInput" data-field="title" placeholder="请填写职务或职称" />
+        <text class="label">盟内职务</text>
+        <input value="{{form.position}}" bindinput="onInput" data-field="position" placeholder="请填写职务或职称" />
+      </view>
+
+      <view class="cell">
+        <text class="label">单位名称</text>
+        <input value="{{form.organization}}" bindinput="onInput" data-field="organization" placeholder="如：XX公司/机构" />
       </view>
 
           <!-- 职务/职称（手填） -->
@@ -77,13 +79,7 @@
         <text class="label">职务/职称</text>
         <input value="{{form.title}}" bindinput="onInput" data-field="title" placeholder="请填写职务或职称" />
       </view>
-
-      <view class="cell">
-        <text class="label">单位名称</text>
-        <input value="{{form.companyName}}" bindinput="onInput" data-field="companyName" placeholder="如：XX公司/机构" />
-      </view>
     </view>
-
 
     <!-- 个人标签 -->
     <view class="card">
@@ -104,6 +100,7 @@
 
   <!-- 悬浮提交 -->
   <view class="float-footer">
-    <button class="btn-submit" bindtap="submit" disabled="{{canSubmit}}">提交并等待审批</button>
+    <button class="btn-submit" formType="submit" disabled="{{canSubmit}}">提交并等待审批</button>
   </view>
+  </form>
 </view>

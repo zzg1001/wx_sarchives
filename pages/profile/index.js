@@ -1,3 +1,4 @@
+const app = getApp()
 Page({
   data: {
     role: 'leader', // 登录后写死 leader / member
@@ -15,92 +16,30 @@ Page({
   },
 
   onLoad() {
+    app.verifyLogin('profile')
     // 1. 身份判断
     const role = wx.getStorageSync('role') || 'leader';
     this.setData({ role });
-
     // 2. 我的信息
-    const myInfo = this.mockMyInfo();
-    this.setData({ myInfo });
+     this.mockMyInfo();
+    
 
     // 3. 领导加载下属
-    if (role === 'leader') {
-      const subList = this.mockSubList();
-      this.setData({ subList, filteredSubList: subList }); // 初始化 filteredSubList
-      this.setData({ approvalList: this.mockApprovalList() }); // 新增审批列表
-      this.updateApprovalCount(); // 更新审批任务数量
-    } else {
-      this.setData({ filteredSubList: this.mockSubList() }); // 初始化 filteredSubList
-    }
+    // if (role === 'leader') {
+       this.mockSubList('');
+
+      // this.setData({ subList, filteredSubList: subList }); // 初始化 filteredSubList
+       this.setData({ approvalList: this.mockApprovalList() }); // 新增审批列表
+       this.updateApprovalCount(); // 更新审批任务数量
+    // } else {
+      // this.setData({ filteredSubList: this.mockSubList() }); // 初始化 filteredSubList
+    // }
   },
 
   onShow() {
-    const token =  wx.getStorageSync('token')
-    console.log(`注册页：onShow token ${token}`)
-    if (!token) {
-             wx.login({
-               success: (res) => {
-                 if(res.code){
-                   const obj = { code: res.code }
-                   this.onShowLogInfo(obj);
-                 }else{
-              
-                 }
-               }
-         })
-    }
+      
  },
- onShowLogInfo(obj){
-  
-   app.wxRequest(
-     'POST',
-     '/auth/login', obj,
-     (res) => {
-         if( res.statusCode != 200){
-           wx.showToast({ title: '服务器响应超时，请稍后再试', icon: 'error', duration: 2000 });
-          }else{
-            console.log("res.data:"+ JSON.stringify(res.data))
-            const obje = JSON.stringify(res.data)
-           this.onShowLogTaken(obje);
-          }
-        },
-      (err)=>{
-       setTimeout(()=>{
-         wx.showToast({
-           title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
-           icon: 'none',
-           duration: 2000
-         })
-       },1000);
- 
-     })
- },
- onShowLogTaken(resData){
-   const { code, content } =  resData
-         if(code==200){
-             if(content){
-                 const { token } =  JSON.stringify(content)
-                 if(token){
-                   wx.setStorageSync('loginSate', true)
-                   wx.setStorageSync('token', token)
-                 }else{
-                   wx.setStorageSync('loginSate', false)
-                   wx.setStorageSync('token', null)
-                   setTimeout(() => {
-                             wx.navigateTo({
-                               url: '/pages/home/index?registerStat=true'
-                             });
-                        }, 1000);
-                 }
-             }
-           }else{
-             setTimeout(() => {
-                     wx.navigateTo({
-                       url: '/pages/home/index?registerStat=true'
-                     });
-               }, 1000);
-           }
- },
+
   // 切换标签
   switchTab(e) {
     this.setData({ currentTab: e.currentTarget.dataset.tab });
@@ -173,10 +112,14 @@ Page({
       this.setData({ filteredSubList: this.data.subList });
     } else {
       // 模糊查找
-      const filteredSubList = this.data.subList.filter(item =>
-        item.name.includes(searchQuery) || item.company.includes(searchQuery)
-      );
-      this.setData({ filteredSubList });
+      console.log("searchQuery:"+searchQuery)
+      this.mockSubList(searchQuery);
+      // const filteredSubList = this.data.subList.filter(item =>
+      //   item.name.includes(searchQuery) || item.company.includes(searchQuery)
+      // );
+
+
+      // this.setData({ filteredSubList });
     }
   },
 
@@ -184,36 +127,72 @@ Page({
   clearSearch() {
     this.setData({ searchQuery: '' });
     this.setData({ filteredSubList: this.data.subList });
+    this.mockSubList('');
   },
 
   // 模拟数据
   mockMyInfo() {
-    return {
-      avatarUrl: '/static/images/1.png',
-      name: '张三',
-      birth: '1990-05',
-      sex:'男',
-      phone: '13800138000',
-      email: 'zhangsan@test.com',
-      company: '中共XX市委',
-      title: '科员'
-    };
+    const token = wx.getStorageSync('token')
+    if(token){
+      app.wxRequest(
+        'GET',
+        '/member/getMember', null,
+        (res) => {
+          const {code,message,content} = res.data
+          const myInfo = content
+          if(code == 200){
+            this.setData({ myInfo });
+          }
+         },
+         (err)=>{
+          setTimeout(()=>{
+            wx.showToast({
+              title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
+              icon: 'none',
+              duration: 2000
+            })
+          },1000);
+        })
+      
+    }
   },
 
-  mockSubList() {
-    return [
-      { id: '001', avatarUrl: '/pages/image/mm.png', name: '李四', company: 'XX市委', title: '科员', phone: '13800138001', showDetails: false },
-      { id: '002', avatarUrl: '/pages/image/mm.png', name: '王五', company: 'XX市委', title: '科员', phone: '13800138002', showDetails: false },
-      { id: '003', avatarUrl: '/pages/image/mm.png', name: '孙八', company: 'XX市委', title: '科员', phone: '13800138003', showDetails: false },
-      { id: '004', avatarUrl: '/pages/image/mm.png', name: '周九', company: 'XX市委', title: '科员', phone: '13800138004', showDetails: false }
-    ];
+  mockSubList(keyword) {
+    console.log("keyword:"+keyword)
+    const keywords = {keyword:keyword}
+    app.wxRequest(
+      'GET',
+      '/member/search', keywords,
+      (res) => {
+          if( res.statusCode != 200){
+            wx.showToast({ title: '服务器响应超时，请稍后再试', icon: 'error', duration: 2000 });
+            wx.setStorageSync('loginSate', false)
+            wx.setStorageSync('token', null)
+           }else{
+             const resl = res.data
+             const {content} = resl
+             console.log("subList=>"+ JSON.stringify(content))
+             const subList = content
+             this.setData({ subList, filteredSubList: subList }); // 初始化 filteredSubList
+           }
+         },
+       (err)=>{
+        setTimeout(()=>{
+          wx.showToast({
+            title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
+            icon: 'none',
+            duration: 2000
+          })
+        },1000);
+      })
+  
   },
 
   mockApprovalList() {
     return [
-      { id: '001', name: '高老师1', role: '新成员', applyTime: '2025-07-15', contact: '13800138000'},
-      { id: '002', name: '高老师2', role: '新成员', applyTime: '2025-07-14', contact: '13800138001'},
-      { id: '003', name: '高老师3', role: '新成员', applyTime: '2025-07-14', contact: '13800138001'}
+      { id: '001', name: '待开发1', role: '待开发1', applyTime: '2025-07-15', contact: '13800138000'},
+      { id: '002', name: '待开发1', role: '待开发1', applyTime: '2025-07-14', contact: '13800138001'},
+      { id: '003', name: '待开发2', role: '待开发1', applyTime: '2025-07-14', contact: '13800138001'}
     ];
   }
 });

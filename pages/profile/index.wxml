@@ -2,7 +2,7 @@
   <!-- 切换按钮 -->
   <view class="tabs">
     <view class="tab {{currentTab==='my' ? 'active' : ''}}" bindtap="switchTab" data-tab="my">我的</view>
-    <view wx:if="{{role==='leader'|| role==='member'}}" class="tab {{currentTab==='sub' ? 'active' : ''}}" bindtap="switchTab" data-tab="sub">盟员</view>
+    <view wx:if="{{role==='leader'|| role==='member'}}" class="tab {{currentTab==='sub' ? 'active' : ''}}" bindtap="switchTab" data-tab="sub">搜索</view>
     <view wx:if="{{role==='leader'}}" class="tab {{currentTab==='approval' ? 'active' : ''}}" bindtap="switchTab" data-tab="approval">
       审批
       <view wx:if="{{approvalCount > 0}}" class="approval-badge">{{approvalCount}}</view>
@@ -12,21 +12,33 @@
   <!-- 我的档案面板 -->
   <scroll-view wx:if="{{currentTab==='my'}}" class="panel" scroll-y>
     <view class="photo-card">
-      <image class="id-photo" src="{{myInfo.avatarUrl}}" mode="aspectFill"/>
+      <image class="id-photo" src="{{myInfo.photo}}" mode="aspectFill"/>
     </view>
     <view class="card">
       <view class="title">基本信息</view>
       <view class="row"><text class="label">姓名</text><text class="value">{{myInfo.name}}</text></view>
-      <view class="row"><text class="label">性别</text><text class="value">{{myInfo.sex}}</text></view>
+      <view class="row"><text class="label">性别</text><text class="value">{{myInfo.gender == 0 ? '男' : '女'}}</text></view>
       <view class="row"><text class="label">出生年月</text><text class="value">{{myInfo.birth}}</text></view>
-      <view class="row"><text class="label">手机</text><text class="value">{{myInfo.phone}}</text></view>
+      <view class="row"><text class="label">手机号码</text><text class="value">{{myInfo.phone}}</text></view>
       <view class="row"><text class="label">邮箱</text><text class="value">{{myInfo.email}}</text></view>
     </view>
     <view class="card">
       <view class="title">组织与职务</view>
-      <view class="row"><text class="label">民盟：组织</text><text class="value">{{myInfo.company}}</text></view>
-      <view class="row"><text class="label">民盟：职务/职称</text><text class="value">{{myInfo.title}}</text></view>
+      <view class="row"><text class="label">所属支部</text><text class="value">{{	  myInfo.branch==46?'原石化支部':myInfo.branch==47?'陆家嘴一支部':myInfo.branch==48?'陆家嘴二支部':myInfo.branch==49?'陆家嘴三支部':myInfo.branch==50?'陆家嘴四支部':'未知'}}</text></view>
+      <view class="row"><text class="label">盟内职务</text><text class="value">{{myInfo.position}}</text></view>
+      <view class="row"><text class="label">单位名称</text><text class="value">{{myInfo.organization}}</text></view>
       <view class="row"><text class="label">职务/职称</text><text class="value">{{myInfo.title}}</text></view>
+    </view>
+
+    <view class="card">
+      <view class="title">个人标签</view>
+      <view class="row"><text class="label">专业特长</text><text class="value">{{myInfo.skills}}</text></view>
+      <view class="row"><text class="label">兴趣爱好</text><text class="value">{{myInfo.title}}</text></view>
+    </view>
+
+    <view class="card">
+      <view class="title">其他</view>
+      <view class="row"><text class="label"></text><text class="value">{{myInfo.other}}</text></view>
     </view>
 
   </scroll-view>
@@ -34,7 +46,7 @@
   <!-- 下属成员面板（领导专属） -->
   <scroll-view wx:if="{{currentTab==='sub'}}" class="panel sub-panel" scroll-y>
     <view class="search-bar">
-      <input type="text" placeholder="搜索姓名..." bindinput="onSearchInput" value="{{searchQuery}}" />
+      <input type="text" placeholder=" 搜索..." bindinput="onSearchInput" value="{{searchQuery}}" />
       <view wx:if="{{searchQuery}}" class="clear-button" bindtap="clearSearch">
         <text class="clear-text">X</text>
       </view>
@@ -43,17 +55,17 @@
       <view class="sub-item-group">
         <view class="sub-item" bindtap="toggleSubDetail" data-id="{{item.id}}">
           <text class="name">{{item.name}}</text>
-          <text class="company">{{item.company}}</text>
+          <text class="branch">{{myInfo.branch==46?'原石化支部':myInfo.branch==47?'陆家嘴一支部':myInfo.branch==48?'陆家嘴二支部':myInfo.branch==49?'陆家嘴三支部':myInfo.branch==50?'陆家嘴四支部':'未知'}}</text>
           <text class="arrow">{{item.showDetails ? 'v' : '>'}}</text>
         </view>
         <view wx:if="{{item.showDetails}}" class="sub-detail">
           <view class="sub-photo-card">
-            <image class="sub-id-photo" src="{{item.avatarUrl}}" mode="aspectFill"/>
+            <image class="sub-id-photo" src="{{item.photo}}" mode="aspectFill"/>
           </view>
           <view class="sub-card">
             <view class="title">详细信息</view>
             <view class="row"><text class="label">姓名</text><text class="value">{{item.name}}</text></view>
-            <view class="row"><text class="label">组织</text><text class="value">{{item.company}}</text></view>
+            <view class="row"><text class="label">组织</text><text class="value">{{ myInfo.branch==46?'原石化支部':myInfo.branch==47?'陆家嘴一支部':myInfo.branch==48?'陆家嘴二支部':myInfo.branch==49?'陆家嘴三支部':myInfo.branch==50?'陆家嘴四支部':'未知'}}</text></view>
             <view class="row"><text class="label">职务/职称</text><text class="value">{{item.title}}</text></view>
             <view class="row"><text class="label">联系方式</text><text class="value">{{item.phone}}</text></view>
           </view>

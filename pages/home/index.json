@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "login-popup": "/components/LoginPopup/LoginPopup"
+    "login-popup": "/components/LoginPopup/LoginPopup",
+    "policy-modal": "/components/policyModal/policyModal"
   }
 }

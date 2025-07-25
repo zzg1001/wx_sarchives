@@ -1,8 +1,9 @@
 App({
   globalData: {
    url: 'https://wx.ike-data.com'
-    //  url: 'http://172.16.10.135:8090',
+    //  url: 'http://172.16.10.135:8090'
     // url: 'http://47.100.100.139:8043',
+    ,pkg:'register'
   },
   
   /**
@@ -40,6 +41,7 @@ App({
   },
   wxUploadFile(method, url, data,tempFilePath, callback,reject) {
     wx.uploadFile({
+      method: method,
       url: this.globalData.url + url,
       filePath: tempFilePath, // 要上传文件资源的路径
       name: 'file', 
@@ -59,5 +61,78 @@ App({
         wx.hideLoading();
       }
     })
-  },
+  },  
+  verifyLogin(pg) {
+    this.globalData.pkg=pg
+    wx.login({
+        success: (res) => {
+           if(res.code){
+               const obj = { code: res.code }
+               this.onShowLogInfo(obj);
+             }else{
+               wx.showToast({
+                 title: "系统异常请刷新后重试！",
+                 icon: 'none',
+                 duration: 2000
+               });
+             }
+       }
+   })
+},
+onShowLogInfo(obj){
+this.wxRequest(
+'POST',
+'/auth/login', obj,
+(res) => {
+    if( res.statusCode != 200){
+      wx.showToast({ title: '服务器响应超时，请稍后再试', icon: 'error', duration: 2000 });
+     }else{
+      this.onShowLogTaken(res.data);
+     }
+   },
+ (err)=>{
+  setTimeout(()=>{
+    wx.showToast({
+      title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
+      icon: 'none',
+      duration: 2000
+    })
+  },1000);
+
+})
+},
+onShowLogTaken(resData){
+const { code, content } =  resData
+    if(code==200){
+            const { token } =  content
+            if(token){
+              console.log("获取token值："+token)
+              wx.setStorageSync('loginSate', true)
+              wx.setStorageSync('token', token)
+            }else{
+              wx.setStorageSync('loginSate', false)
+              wx.setStorageSync('token', null)
+              const pg = this.globalData.pkg
+              if(pg == 'home'){
+                 return;
+              }else{
+                 setTimeout(() => {
+                        wx.navigateTo({
+                          url: '/pages/home/index?registerStat=true'
+                        });
+                  }, 1000);
+                }
+              }
+      }else{
+       wx.setStorageSync('loginSate', false)
+       wx.setStorageSync('token', null)
+         setTimeout(()=>{
+           wx.showToast({
+             title: '服务器响异常，请试！' ,
+             icon: 'none',
+             duration: 2000
+           })
+         },1000);
+      }
+},
 })
