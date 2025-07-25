@@ -12,13 +12,12 @@ Page({
   handleAgree: function() {
     wx.setStorageSync('userAgreement', true);
     console.log('用户已同意');
-    wx.navigateTo({
-      url: `/pages/register/register`,
-    })
+
     // 可以在这里添加登录逻辑或其他需要用户同意后才能进行的操作
   },
   handleDisagree() {
     console.log('用户拒绝');
+    wx.setStorageSync('userAgreement', false);
     wx.showToast({
       title: '请先阅读并同意协议',
       icon: 'none'
@@ -28,8 +27,11 @@ Page({
     const token = wx.getStorageSync('token')
     console.log("入口的token:"+token)
     app.verifyLogin('home')
+    const userAgreement = wx.getStorageSync('userAgreement')
     if(!token){
-      this.showPolicyModal()
+      if(!userAgreement){
+        this.showPolicyModal()
+      }
      }
    
   },
@@ -133,7 +135,15 @@ Page({
                       url: `/pages/profile/index`,
                     })
                 }else{
+                 const userAgreement = wx.getStorageSync('userAgreement') 
+                 if(!userAgreement){
                   this.showPolicyModal()
+                 }else{
+                  wx.navigateTo({
+                    url: `/pages/register/register`,
+                  })
+                 }
+                 
                 }
               }
             },

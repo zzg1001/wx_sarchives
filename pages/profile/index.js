@@ -190,9 +190,9 @@ Page({
 
   mockApprovalList() {
     return [
-      { id: '001', name: '待开发1', role: '待开发1', applyTime: '2025-07-15', contact: '13800138000'},
-      { id: '002', name: '待开发1', role: '待开发1', applyTime: '2025-07-14', contact: '13800138001'},
-      { id: '003', name: '待开发2', role: '待开发1', applyTime: '2025-07-14', contact: '13800138001'}
+      { id: '001', name: '待开发', role: '待开发', applyTime: '2025-07-15', contact: '13800138000'},
+      { id: '002', name: '待开发', role: '待开发', applyTime: '2025-07-14', contact: '13800138001'},
+      { id: '003', name: '待开发', role: '待开发', applyTime: '2025-07-14', contact: '13800138001'}
     ];
   }
 });
