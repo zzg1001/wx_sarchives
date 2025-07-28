@@ -43,7 +43,7 @@
 
   </scroll-view>
 
-  <!-- 下属成员面板（领导专属） -->
+  <!-- 搜索 -->
   <scroll-view wx:if="{{currentTab==='sub'}}" class="panel sub-panel" scroll-y>
     <view class="search-bar">
       <input type="text" placeholder=" 搜索..." bindinput="onSearchInput" value="{{searchQuery}}" />
@@ -55,7 +55,7 @@
       <view class="sub-item-group">
         <view class="sub-item" bindtap="toggleSubDetail" data-id="{{item.id}}">
           <text class="name">{{item.name}}</text>
-          <text class="branch">{{myInfo.branch==46?'原石化支部':myInfo.branch==47?'陆家嘴一支部':myInfo.branch==48?'陆家嘴二支部':myInfo.branch==49?'陆家嘴三支部':myInfo.branch==50?'陆家嘴四支部':'未知'}}</text>
+          <text class="branch">{{item.branch==46?'原石化支部':item.branch==47?'陆家嘴一支部':item.branch==48?'陆家嘴二支部':item.branch==49?'陆家嘴三支部':item.branch==50?'陆家嘴四支部':'未知'}}</text>
           <text class="arrow">{{item.showDetails ? 'v' : '>'}}</text>
         </view>
         <view wx:if="{{item.showDetails}}" class="sub-detail">
@@ -65,9 +65,11 @@
           <view class="sub-card">
             <view class="title">详细信息</view>
             <view class="row"><text class="label">姓名</text><text class="value">{{item.name}}</text></view>
-            <view class="row"><text class="label">组织</text><text class="value">{{ myInfo.branch==46?'原石化支部':myInfo.branch==47?'陆家嘴一支部':myInfo.branch==48?'陆家嘴二支部':myInfo.branch==49?'陆家嘴三支部':myInfo.branch==50?'陆家嘴四支部':'未知'}}</text></view>
+            <view class="row"><text class="label">所属支部</text><text class="value">{{ item.branch==46?'原石化支部':item.branch==47?'陆家嘴一支部':item.branch==48?'陆家嘴二支部':item.branch==49?'陆家嘴三支部':item.branch==50?'陆家嘴四支部':'未知'}}</text></view>
+            <view class="row"><text class="label">手机号码</text><text class="value">{{item.phone}}</text></view>
+            <view class="row"><text class="label">单位名称</text><text class="value">{{item.organization}}</text></view>
             <view class="row"><text class="label">职务/职称</text><text class="value">{{item.title}}</text></view>
-            <view class="row"><text class="label">联系方式</text><text class="value">{{item.phone}}</text></view>
+           
           </view>
         </view>
       </view>

@@ -44,7 +44,8 @@ Page({
   switchTab(e) {
     this.setData({ currentTab: e.currentTarget.dataset.tab });
     if (e.currentTarget.dataset.tab === 'sub') {
-      this.setData({ filteredSubList: this.data.subList, currentSubId: null, searchQuery: '' }); // 重置搜索结果和当前展开的下属成员ID
+      this.mockSubList('')
+      this.setData({ currentSubId: null, searchQuery: '' }); // 重置搜索结果和当前展开的下属成员ID
     }
   },
 

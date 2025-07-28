@@ -120,7 +120,7 @@ const { code, content } =  resData
                         wx.navigateTo({
                           url: '/pages/home/index?registerStat=true'
                         });
-                  }, 1000);
+                  }, 2000);
                 }
               }
       }else{
