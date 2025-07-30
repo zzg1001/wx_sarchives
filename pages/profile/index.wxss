@@ -14,6 +14,7 @@ page {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-top: 5px;
   height: 60px; /* 固定高度 */
   background: #D9EAF7; /* 调整背景颜色 */
   border-radius: 8px;

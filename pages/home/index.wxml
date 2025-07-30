@@ -33,9 +33,15 @@
     </swiper>
   </view>  
   <view class="services">
-    <view class="service-item" bindtap="navigateToPesonInfo">通讯录</view>
-    <view class="service-item" bindtap="navigateToQa">趣答题</view>
+  <view class="service-item" bindtap="navigateToPesonInfo">
+    <image class="service-image" src="/static/images/b.png"></image>
+    <view class="btn-content">通讯录</view>
   </view>
+  <view class="service-item" bindtap="navigateToQa">
+    <image class="service-image" src="/static/images/y.png"></image>
+    <view class="btn-content" >趣答题</view>
+  </view>
+</view>
   <login-popup login-state="{{loginState}}" bind:loginSuccess="handleLoginSuccess"></login-popup>
   <policy-modal bind:agree="handleAgree" bind:disagree="handleDisagree" visible="{{showModal}}"></policy-modal>
 </view>

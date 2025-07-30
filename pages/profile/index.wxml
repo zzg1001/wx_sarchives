@@ -3,7 +3,7 @@
   <view class="tabs">
     <view class="tab {{currentTab==='my' ? 'active' : ''}}" bindtap="switchTab" data-tab="my">我的</view>
     <view wx:if="{{role==='leader'|| role==='member'}}" class="tab {{currentTab==='sub' ? 'active' : ''}}" bindtap="switchTab" data-tab="sub">搜索</view>
-    <view wx:if="{{role==='leader'}}" class="tab {{currentTab==='approval' ? 'active' : ''}}" bindtap="switchTab" data-tab="approval">
+    <view wx:if="{{role===''}}" class="tab {{currentTab==='approval' ? 'active' : ''}}" bindtap="switchTab" data-tab="approval">
       审批
       <view wx:if="{{approvalCount > 0}}" class="approval-badge">{{approvalCount}}</view>
     </view>

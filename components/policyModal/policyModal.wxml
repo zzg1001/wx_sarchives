@@ -34,7 +34,7 @@
         <br/>9. 其他：本隐私政策的解释权归[小程序运营方]所有。
       </text>
     </scroll-view>
-    <button bindtap="agreePolicy" disabled="{{!canAgree}}">同意</button>
-    <button bindtap="disagreePolicy" disabled="{{!canAgree}}">不同意</button>
+    <button bindtap="agreePolicy" disabled="{{!canAgree}}">{{promptY}}</button>
+    <button bindtap="disagreePolicy" disabled="{{!canAgree}}">{{promtN}}</button>
   </view>
 </view>

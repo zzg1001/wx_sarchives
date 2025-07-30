@@ -79,17 +79,21 @@
   width: 100%;
   box-sizing: border-box;
 }
-
 .service-item {
-  background-color: #fff; /* 白色背景 */
+  background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
   border-radius: 15px;
-  padding: 30px; /* 内边距 */
+  padding: 20px; /* 内边距 */
   text-align: center;
-  color: #000; /* 黑色文字 */
-  font-size: 20px; /* 字体大小 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-size: cover; /* 背景图片覆盖整个元素 */
-  background-position: center; /* 背景图片居中 */
-  background-repeat: no-repeat; /* 背景图片不重复 */
-  cursor: pointer; /* 鼠标悬停时显示指针 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-image {
+  width: 50px; /* 图片宽度 */
+  height: 50px; /* 图片高度 */
+  display: block; /* 确保图片独占一行 */
+  margin: 0 auto; /* 水平居中 */
+}
+.btn-content{
+  margin-top: 5px;
 }
