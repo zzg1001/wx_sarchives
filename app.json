@@ -4,6 +4,7 @@
     "pages/index/index",
     "pages/profile/index",
     "pages/register/register",
+    "pages/status/status",
     "components/LoginPopup/LoginPopup",
     "pages/answer/answer",
     "pages/resultPage/resultPage",

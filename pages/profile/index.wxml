@@ -2,8 +2,8 @@
   <!-- 切换按钮 -->
   <view class="tabs">
     <view class="tab {{currentTab==='my' ? 'active' : ''}}" bindtap="switchTab" data-tab="my">我的</view>
-    <view wx:if="{{role==='leader'|| role==='member'}}" class="tab {{currentTab==='sub' ? 'active' : ''}}" bindtap="switchTab" data-tab="sub">搜索</view>
-    <view wx:if="{{role===''}}" class="tab {{currentTab==='approval' ? 'active' : ''}}" bindtap="switchTab" data-tab="approval">
+    <view wx:if="{{role==='LEADER'|| role==='MEMBER'}}" class="tab {{currentTab==='sub' ? 'active' : ''}}" bindtap="switchTab" data-tab="sub">搜索</view>
+    <view wx:if="{{role==='LEADER'}}" class="tab {{currentTab==='approval' ? 'active' : ''}}" bindtap="switchTab" data-tab="approval">
       审批
       <view wx:if="{{approvalCount > 0}}" class="approval-badge">{{approvalCount}}</view>
     </view>
@@ -77,7 +77,7 @@
   </scroll-view>
 
   <!-- 审批面板（领导专属） -->
-  <scroll-view wx:if="{{currentTab==='approval' && role==='leader'}}" class="panel approval-panel" scroll-y>
+  <scroll-view wx:if="{{currentTab==='approval' && role==='LEADER'}}" class="panel approval-panel" scroll-y>
     <!-- 审批列表 -->
     <block wx:for="{{approvalList}}" wx:key="id">
       <view class="approval-item" bindtap="toggleDetails" data-index="{{index}}" >

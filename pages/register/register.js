@@ -109,7 +109,10 @@ Page({
   /* 提交 */
   async submit() {
         if (this.validate()){
-          this.uploadUserInfo();
+          const token =  wx.getStorageSync('token')
+          if(token){
+            this.uploadUserInfo();
+          }
         }else if(!this.validate()){
           return;
         }
@@ -117,15 +120,14 @@ Page({
     },
     // 提交用户信息
     uploadUserInfo(){
-      const token =  wx.getStorageSync('token')
-      if(token){
+     
+    
          wx.login({
           success: (res) => {
            const code = res.code
            this.userInfo(code);
            }
          });
-      }
      
     },
     userInfo(code){
@@ -154,17 +156,14 @@ Page({
    navigateToProfile(relus){
     const {code ,message} = relus
     if(code == 200){
-      setTimeout(()=>{
         wx.showToast({
           title: '提交成功',
           icon: 'success',
           duration: 2000
         });
-
-      },2000)
     
       wx.navigateTo({
-          url: `/pages/profile/index`,
+          url: `/pages/status/status`,
        })
 
      }else{

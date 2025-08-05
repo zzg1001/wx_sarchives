@@ -104,14 +104,18 @@ this.wxRequest(
 onShowLogTaken(resData){
 const { code, content } =  resData
     if(code==200){
-            const { token } =  content
+            const { token,permissionList,verify } =  content
             if(token){
               console.log("获取token值："+token)
               wx.setStorageSync('loginSate', true)
               wx.setStorageSync('token', token)
+              wx.setStorageSync('role', permissionList[0])
+              wx.setStorageSync('userStatus', verify)
             }else{
               wx.setStorageSync('loginSate', false)
               wx.setStorageSync('token', null)
+              wx.setStorageSync('role',null)
+              wx.setStorageSync('userStatus', null)
               const pg = this.globalData.pkg
               if(pg == 'home'){
                  return;
@@ -126,6 +130,7 @@ const { code, content } =  resData
       }else{
        wx.setStorageSync('loginSate', false)
        wx.setStorageSync('token', null)
+       wx.setStorageSync('userStatus', null)
          setTimeout(()=>{
            wx.showToast({
              title: '服务器响异常，请试！' ,

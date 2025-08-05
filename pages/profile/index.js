@@ -1,16 +1,13 @@
 const app = getApp()
 Page({
   data: {
-    role: 'leader', // 登录后写死 leader / member
+    role: 'MEMBER', // 登录后写死 LEADER / MEMBER
     currentTab: 'my', // 默认显示“我的档案”
     myInfo: {}, // 我的信息
     subList: [], // 所有下属成员列表
     filteredSubList: [], // 搜索过滤后的下属成员列表
     searchQuery: '', // 搜索框的内容
-    approvalList: [
-      { id: '001', name: '赵六', role: '新成员', applyTime: '2025-07-15', contact: '13800138000', showDetails: false },
-      { id: '002', name: '钱七', role: '新成员', applyTime: '2025-07-14', contact: '13800138001', showDetails: false }
-    ],
+    approvalList: [],
     approvalCount: 0, // 审批任务数量
     currentSubId: null // 当前展开的下属成员ID
   },
@@ -18,22 +15,18 @@ Page({
   onLoad() {
     app.verifyLogin('profile')
     // 1. 身份判断
-    const role = wx.getStorageSync('role') || 'leader';
+    const role = wx.getStorageSync('role') || 'MEMBER';
     this.setData({ role });
     // 2. 我的信息
      this.mockMyInfo();
     
-
+     this.mockSubList('');
     // 3. 领导加载下属
-    // if (role === 'leader') {
-       this.mockSubList('');
-
-      // this.setData({ subList, filteredSubList: subList }); // 初始化 filteredSubList
-       this.setData({ approvalList: this.mockApprovalList() }); // 新增审批列表
+    if (role ==='LEADER') {
+      
+      this.setData({ approvalList: this.mockApprovalList() }); // 新增审批列表
        this.updateApprovalCount(); // 更新审批任务数量
-    // } else {
-      // this.setData({ filteredSubList: this.mockSubList() }); // 初始化 filteredSubList
-    // }
+    }
   },
 
   onShow() {
@@ -190,8 +183,10 @@ Page({
   },
 
   mockApprovalList() {
+
+    // this.setData({ approvalList: this.mockApprovalList() }); 
     return [
-      { id: '001', name: '待开发', role: '待开发', applyTime: '2025-07-15', contact: '13800138000'},
+      { id: '001', name: '11', role: '待开发', applyTime: '2025-07-15', contact: '13800138000'},
       { id: '002', name: '待开发', role: '待开发', applyTime: '2025-07-14', contact: '13800138001'},
       { id: '003', name: '待开发', role: '待开发', applyTime: '2025-07-14', contact: '13800138001'}
     ];

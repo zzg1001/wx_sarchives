@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* 将内容放置在屏幕的上半部分 */
+  height: 100vh;
+  background-color: #ffffff; /* 白色背景 */
+  margin-top: 100px;
+  padding: 20px;
+}
+
+.icon-container {
+  margin-bottom: 20px;
+}
+
+.icon {
+  width: 50px; /* 图标宽度 */
+  height: 50px; /* 图标高度 */
+}
+
+.title {
+  font-size: 16px; /* 字体小一点 */
+  font-weight: bold; /* 加粗 */
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 5px; /* 调整行间距 */
+}

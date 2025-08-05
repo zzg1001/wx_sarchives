@@ -1,0 +1,10 @@
+<view class="container">
+  <view class="icon-container">
+    <image class="icon" src="/static/images/sh.png" mode="aspectFit"></image>
+  </view>
+  <text class="title">等待审核</text>
+  <text class="description">您的申请已提交，</text>
+  <text class="description">请及时通知相关人进行审批。</text>
+  <text class="description">请耐心等待。</text>
+</view>
+
