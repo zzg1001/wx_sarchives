@@ -46,52 +46,52 @@ Page({
   },
 onShow(){
   app.verifyLogin('answer')
-  // const fail = wx.getStorageSync('fail');
-  // if(fail){
-  //   setTimeout(()=>{
-  //     wx.showToast({
-  //       title: '服务器响应超时，请稍后再试',
-  //       icon: 'none',
-  //       duration: 2000
-  //     })
-  //   },1000);
-  //   return;
-  // }
+  const fail = wx.getStorageSync('fail');
+  if(fail){
+    setTimeout(()=>{
+      wx.showToast({
+        title: '服务器响应超时，请稍后再试',
+        icon: 'none',
+        duration: 2000
+      })
+    },1000);
+    return;
+  }
 
-  // let data = {};
-  // const token = wx.getStorageSync('token');
-  // if (!token) {
-  //   setTimeout(() => {
-  //     wx.navigateTo({
-  //       url: '/pages/index/index?registerStat=0'
-  //     });
-  //   }, 1000);
-  // } else {
-  //   app.wxRequest('GET', '/qa/getQuestion', data, (res) => {
-  //     const {
-  //       code,
-  //       message,
-  //       content
-  //     } = res.data;
-  //     if (code === 200) {
-  //       const list = content.map(item => ({
-  //         ...item,
-  //         comp: parseInt(item.comp)
-  //       }))
-  //       this.setData({
-  //         questions: list
-  //       });
-  //     }
-  //   },(err)=>{
-  //       setTimeout(()=>{
-  //             wx.showToast({
-  //               title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
-  //               icon: 'none',
-  //               duration: 2000
-  //             })
-  //           },1000);
-  //    });
-  // }
+  let data = {};
+  const token = wx.getStorageSync('token');
+  if (!token) {
+    setTimeout(() => {
+      wx.navigateTo({
+        url: '/pages/home/index?registerStat=0'
+      });
+    }, 1000);
+  } else {
+    app.wxRequest('GET', '/qa/getQuestion', data, (res) => {
+      const {
+        code,
+        message,
+        content
+      } = res.data;
+      if (code === 200) {
+        const list = content.map(item => ({
+          ...item,
+          comp: parseInt(item.comp)
+        }))
+        this.setData({
+          questions: list
+        });
+      }
+    },(err)=>{
+        setTimeout(()=>{
+              wx.showToast({
+                title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
+                icon: 'none',
+                duration: 2000
+              })
+            },1000);
+     });
+  }
 
 
 
