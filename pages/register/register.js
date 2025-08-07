@@ -26,6 +26,9 @@ Page({
 
     /* 生命周期：加载组织列表 */
   async onLoad(options) {
+      setTimeout(()=>{
+        this.showPolicyModal()
+      },2000)
     this.setData({ orgList: '' });
     const modifyInfo = options.modifyInfo
     if(modifyInfo){
@@ -91,7 +94,25 @@ downloadPhoto: function() {
     console.log("入口的token:"+token)
     app.verifyLogin('register')
   },
+  showPolicyModal() {
+    console.log("用户服务协议和隐私政策 请阅读以下内容并选择同意或不同意")
+    this.setData({ showModal: true });
+  },
+  handleAgree: function() {
+    console.log('用户已同意');
 
+    // 可以在这里添加登录逻辑或其他需要用户同意后才能进行的操作
+  },
+  handleDisagree() {
+    console.log('用户拒绝');
+    wx.navigateTo({
+      url:   `/pages/home/index`,
+    })
+    wx.showToast({
+      title: '请先阅读并同意协议',
+      icon: 'none'
+    });
+  },
   /* 统一输入处理 */
   onInput(e) {
     const field = e.currentTarget.dataset.field;

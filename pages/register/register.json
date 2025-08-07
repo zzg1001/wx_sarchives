@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "档案中心"
+  "navigationBarTitleText": "档案中心",
+  "usingComponents": {
+  "policy-modal": "/components/policyModal/policyModal"
+  }
 }

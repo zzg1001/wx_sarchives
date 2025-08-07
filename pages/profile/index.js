@@ -34,11 +34,17 @@ Page({
 
   // 切换标签
   switchTab(e) {
+    const role = wx.getStorageSync('role') || 'MEMBER';
     this.setData({ currentTab: e.currentTarget.dataset.tab });
     if (e.currentTarget.dataset.tab === 'sub') {
       this.mockSubList('')
       this.setData({ currentSubId: null, searchQuery: '' }); // 重置搜索结果和当前展开的下属成员ID
     }
+        // 3. 领导加载下属
+        if (role ==='LEADER') {
+          this.mockApprovalList()// 新增审批列表
+          
+       }
   },
 
   // 展开/收起盟员详细信息

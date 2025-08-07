@@ -4,39 +4,22 @@ Page({
     showModal: false,
     loginState: true ,// 控制弹框显示
     messages: [
-      
+     
     ],
     // 页面数据
   },
-  showPolicyModal() {
-    console.log("用户服务协议和隐私政策 请阅读以下内容并选择同意或不同意")
-    this.setData({ showModal: true });
-  },
-  handleAgree: function() {
-    wx.setStorageSync('userAgreement', true);
-    console.log('用户已同意');
 
-    // 可以在这里添加登录逻辑或其他需要用户同意后才能进行的操作
-  },
-  handleDisagree() {
-    console.log('用户拒绝');
-    wx.setStorageSync('userAgreement', false);
-    wx.showToast({
-      title: '请先阅读并同意协议',
-      icon: 'none'
-    });
-  },
   onShow() {
     const token = wx.getStorageSync('token')
     console.log("入口的token:"+token)
     app.verifyLogin('home')
-    const userAgreement = wx.getStorageSync('userAgreement')
     if(!token){
-      if(!userAgreement){
-        this.showPolicyModal()
-      }
-     }else{
      this.setUserMassge()
+     }else{
+      const newmessage =  [...this.data.messages, "欢迎来的小程序，来体验吧" ]
+      this.setData({
+        messages:newmessage
+      })
      }
   },
   setUserMassge(){
@@ -65,10 +48,6 @@ Page({
                       messages:newmessage
                     })
                   }
-                  const newmessage =  [...this.data.messages,  "知识竞赛已经结束，现在可以自由答题啦！！" ]
-                  this.setData({
-                    messages:newmessage
-                  })
 
                 }
               }
@@ -132,29 +111,24 @@ Page({
               console.log(`code,message,content${code}${message}${content}`)
               if(code == 200){
                 if(content){
-                const {verify} =  content
-                if(verify == 'PENDING'){
-                  wx.navigateTo({
-                    url:   `/pages/status/status`,
-                  })
-                }else if(verify == 'PASSED'){
-                  wx.navigateTo({
-                    url: `/pages/profile/index`,
-                  })
-                }else if(verify == 'REJECTED'){
-                  wx.navigateTo({
-                    url: `/pages/register/register`,
-                  })
-                }
+                    const {verify} =  content
+                    if(verify == 'PENDING'){
+                      wx.navigateTo({
+                        url:   `/pages/status/status`,
+                      })
+                    }else if(verify == 'PASSED'){
+                      wx.navigateTo({
+                        url: `/pages/profile/index`,
+                      })
+                    }else if(verify == 'REJECTED'){
+                      wx.navigateTo({
+                        url: `/pages/register/register`,
+                      })
+                    }
                 }else{
-                 const userAgreement = wx.getStorageSync('userAgreement') 
-                  if(!userAgreement){
-                    this.showPolicyModal()
-                  }else{
                     wx.navigateTo({
                       url: `/pages/register/register`,
                     })
-                  }   
                 }
               }
             },

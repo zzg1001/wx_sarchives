@@ -103,4 +103,5 @@
     <button class="btn-submit" formType="submit" disabled="{{canSubmit}}">提交并等待审批</button>
   </view>
   </form>
+  <policy-modal bind:agree="handleAgree" bind:disagree="handleDisagree" visible="{{showModal}}"></policy-modal>
 </view>

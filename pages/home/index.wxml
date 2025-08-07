@@ -37,5 +37,4 @@
   </view>
 </view>
   <login-popup login-state="{{loginState}}" bind:loginSuccess="handleLoginSuccess"></login-popup>
-  <policy-modal bind:agree="handleAgree" bind:disagree="handleDisagree" visible="{{showModal}}"></policy-modal>
 </view>
