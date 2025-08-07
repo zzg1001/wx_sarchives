@@ -127,6 +127,11 @@ page {
   font-weight: 600;
   margin-bottom: 16px;
 }
+.modify {
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
 
 .row {
   display: flex;

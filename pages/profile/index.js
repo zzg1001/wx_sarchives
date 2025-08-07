@@ -23,9 +23,8 @@ Page({
      this.mockSubList('');
     // 3. 领导加载下属
     if (role ==='LEADER') {
-      
-      this.setData({ approvalList: this.mockApprovalList() }); // 新增审批列表
-       this.updateApprovalCount(); // 更新审批任务数量
+       this.mockApprovalList()// 新增审批列表
+       
     }
   },
 
@@ -55,9 +54,12 @@ Page({
   // 展开/收起审批详情
   toggleDetails(e) {
     const index = e.currentTarget.dataset.index;
-    const approvalList = this.data.approvalList;
-    approvalList[index].showDetails = !approvalList[index].showDetails;
-    this.setData({ approvalList });
+      const approvalList = this.data.approvalList;
+     if(approvalList.length>0){
+      approvalList[index].showDetails = !approvalList[index].showDetails;
+      this.setData({ approvalList });
+     }
+
   },
 
   // 单个审批 - 同意
@@ -66,32 +68,68 @@ Page({
     const approvalList = this.data.approvalList;
     approvalList[index].status = 'approved';
     approvalList[index].showDetails = false; // 关闭详情
+    const user = approvalList[index];
     approvalList.splice(index, 1); // 从列表中移除
-    this.setData({ approvalList });
-    this.updateApprovalCount(); // 更新审批任务数量
-    wx.showToast({
-      title: '审批通过',
-      icon: 'success',
-      duration: 2000
-    });
+    const obj = {id:user.id,status:'PASSED'}
+    app.wxRequest(
+      'GET',
+      '/member/verify', obj,
+      (res) => {
+        console.log(" res.data"+ JSON.stringify(res.data) )
+        this.setData({ approvalList });
+        this.updateApprovalCount(); // 更新审批任务数量
+        wx.showToast({
+          title: '审批通过',
+          icon: 'success',
+          duration: 2000
+        });
+       },
+       (err)=>{
+        setTimeout(()=>{
+          wx.showToast({
+            title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
+            icon: 'none',
+            duration: 2000
+          })
+        },1000);
+      })
+
   },
 
   // 单个审批 - 拒绝
   reject(e) {
     const index = e.currentTarget.dataset.index;
     const approvalList = this.data.approvalList;
+    const user = approvalList[index];
     approvalList.splice(index, 1); // 从列表中移除
-    this.setData({ approvalList });
-    this.updateApprovalCount(); // 更新审批任务数量
-    wx.showToast({
-      title: '审批拒绝',
-      icon: 'none',
-      duration: 2000
-    });
+    const obj = {id:user.id,status:'REJECTED'}
+    app.wxRequest(
+      'GET',
+      '/member/verify', obj,
+      (res) => {
+        console.log(" res.data"+ JSON.stringify(res.data) )
+        this.setData({ approvalList });
+        this.updateApprovalCount(); // 更新审批任务数量
+        wx.showToast({
+          title: '审批拒绝',
+          icon: 'none',
+          duration: 2000
+        });
+       },
+       (err)=>{
+        setTimeout(()=>{
+          wx.showToast({
+            title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
+            icon: 'none',
+            duration: 2000
+          })
+        },1000);
+      })
+
   },
 
   // 更新审批任务数量
-  updateApprovalCount() {
+ async updateApprovalCount() {
     const approvalCount = this.data.approvalList.length;
     this.setData({ approvalCount });
   },
@@ -111,8 +149,6 @@ Page({
       // const filteredSubList = this.data.subList.filter(item =>
       //   item.name.includes(searchQuery) || item.company.includes(searchQuery)
       // );
-
-
       // this.setData({ filteredSubList });
     }
   },
@@ -165,7 +201,6 @@ Page({
            }else{
              const resl = res.data
              const {content} = resl
-             console.log("subList=>"+ JSON.stringify(content))
              const subList = content
              this.setData({ subList, filteredSubList: subList }); // 初始化 filteredSubList
            }
@@ -181,14 +216,35 @@ Page({
       })
   
   },
+  modifyInfo(){
+    wx.navigateTo({
+      url: `/pages/register/register?modifyInfo=1`,
+    })
+  },
 
   mockApprovalList() {
-
-    // this.setData({ approvalList: this.mockApprovalList() }); 
-    return [
-      { id: '001', name: '11', role: '待开发', applyTime: '2025-07-15', contact: '13800138000'},
-      { id: '002', name: '待开发', role: '待开发', applyTime: '2025-07-14', contact: '13800138001'},
-      { id: '003', name: '待开发', role: '待开发', applyTime: '2025-07-14', contact: '13800138001'}
-    ];
+    app.wxRequest(
+      'GET',
+      '/member/pendingList',null,
+      (res) => {
+          if( res.statusCode != 200){
+            wx.showToast({ title: '服务器响应超时，请稍后再试', icon: 'error', duration: 2000 });
+           }else{
+             const resl = res.data
+             const {content}  = resl                              
+            const approvalList = content.map(itm=>{return{...itm, showDetails: false}})
+             this.setData({ approvalList: approvalList })
+             this.updateApprovalCount(); // 更新审批任务数量
+           }
+         },
+       (err)=>{
+        setTimeout(()=>{
+          wx.showToast({
+            title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
+            icon: 'none',
+            duration: 2000
+          })
+        },1000);
+      })
   }
 });

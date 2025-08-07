@@ -15,7 +15,7 @@
       <image class="id-photo" src="{{myInfo.photo}}" mode="aspectFill"/>
     </view>
     <view class="card">
-      <view class="title">基本信息</view>
+      <view class="row"><view class="title">基本信息</view>  <view class="modify"  bindtap="modifyInfo">修改</view> </view>
       <view class="row"><text class="label">姓名</text><text class="value">{{myInfo.name}}</text></view>
       <view class="row"><text class="label">性别</text><text class="value">{{myInfo.gender == 0 ? '男' : '女'}}</text></view>
       <view class="row"><text class="label">出生年月</text><text class="value">{{myInfo.birth}}</text></view>
@@ -83,14 +83,14 @@
       <view class="approval-item" bindtap="toggleDetails" data-index="{{index}}" >
         <view class="applicant-info">
           <text class="applicant-name">{{item.name}}</text>
-          <text class="applicant-role">申请成为：{{item.role}}</text>
+          <text class="applicant-role">申请成为：{{item.branchStr}}</text>
           <text class="arrow">{{item.showDetails ? 'v' : '>'}}</text>
         </view>
         <view class="details" wx:if="{{item.showDetails}}">
           <view class="detail-item">姓名：{{item.name}}</view>
-          <view class="detail-item">申请成为：{{item.role}}</view>
-          <view class="detail-item">申请时间：{{item.applyTime}}</view>
-          <view class="detail-item">联系方式：{{item.contact}}</view>
+          <view class="detail-item">申请成为：{{item.branchStr}}</view>
+          <view class="detail-item">申请时间：{{item.updatedDate}}</view>
+          <view class="detail-item">联系方式：{{item.phone}}</view>
           <view class="actions">
             <button bindtap="approve" data-index="{{index}}">同意</button>
             <button bindtap="reject" data-index="{{index}}">拒绝</button>

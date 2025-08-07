@@ -21,7 +21,6 @@ App({
       method: method,
       data: data,
       header: {
-        // application/x-www-form-urlencoded
         'content-type': 'application/json;charset=UTF-8',
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + wx.getStorageSync('token')
@@ -102,7 +101,7 @@ this.wxRequest(
 })
 },
 onShowLogTaken(resData){
-const { code, content } =  resData
+    const { code, content } =  resData
     if(code==200){
             const { token,permissionList,verify } =  content
             if(token){
@@ -139,5 +138,5 @@ const { code, content } =  resData
            })
          },1000);
       }
-},
+   },
 })

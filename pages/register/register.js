@@ -25,17 +25,68 @@ Page({
   },
 
     /* 生命周期：加载组织列表 */
-    async onLoad() {
-      this.setData({ orgList: '' });
- 
-  },
-  /* 生命周期：加载组织列表 */
-  async onLoad() {
-      this.setData({ orgList: '' });
- 
-  },
+  async onLoad(options) {
+    this.setData({ orgList: '' });
+    const modifyInfo = options.modifyInfo
+    if(modifyInfo){
+      this.mockMyInfo()
+    }
+
+},
+mockMyInfo() {
+  const token = wx.getStorageSync('token')
+  if(token){
+    app.wxRequest(
+      'GET',
+      '/member/getMember', null,
+      (res) => {
+        const {code,message,content} = res.data
+        const form = content
+        delete form.haveMember
+        if(code == 200){
+          this.setData({ form
+            ,photo:form.photo
+           });
+           this.updateGroupList(form.branch)
+        }
+       },
+       (err)=>{
+        setTimeout(()=>{
+          wx.showToast({
+            title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
+            icon: 'none',
+            duration: 2000
+          })
+        },1000);
+      })
+  }
+},
+
+downloadPhoto: function() {
+  const { photo } = this.data;
+  wx.downloadFile({
+    url: photo,
+    success: (downloadRes) => {
+      if (downloadRes.statusCode === 200) {
+        this.setData({ photo: downloadRes.tempFilePath });
+      } else {
+        wx.showToast({
+          title: '图片下载失败',
+          icon: 'none'
+        });
+      }
+    },
+    fail: (err) => {
+      console.error('下载失败', err);
+      wx.showToast({
+        title: '图片下载失败',
+        icon: 'none'
+      });
+    }
+  });
+},
   onShow() {
-    this.updateGroupList(); // 获取组队列表
+    this.updateGroupList(null); // 获取组队列表
     const token = wx.getStorageSync('token')
     console.log("入口的token:"+token)
     app.verifyLogin('register')
@@ -69,7 +120,6 @@ Page({
     });
   },
 
-
   /* 上传证件照 */
   chooseAvatar() {
     wx.chooseMedia({
@@ -82,7 +132,6 @@ Page({
       }
     });
   },
-
 
   /* 保存草稿到本地 */
   saveDraft() {
@@ -108,6 +157,7 @@ Page({
 
   /* 提交 */
   async submit() {
+        this.downloadPhoto()
         if (this.validate()){
           const token =  wx.getStorageSync('token')
           if(token){
@@ -120,8 +170,6 @@ Page({
     },
     // 提交用户信息
     uploadUserInfo(){
-     
-    
          wx.login({
           success: (res) => {
            const code = res.code
@@ -178,23 +226,33 @@ Page({
 
    },
      // 获取组队列表
-  updateGroupList: function () {
+  updateGroupList: function (currIndex) {
     app.wxRequest("GET", "/ext/getGroupList", null, res => {
       const { code, message, content } = res.data;
       if (code === 200) {
         const group = content.filter(item =>item.id>=46)
-        const groupId = [0, ...group.map(item =>item.id)];
-        const groupName = ["请选择", ...group.map(item =>item.groupName)];
-            this.setData({
-              orgList: groupName,
-              orgIds:groupId,
-              orgIndex: 0 // 设置默认索引
-            });
-        } else {
+        if(currIndex){
+          const currgroup = content.filter(item =>item.id==currIndex)
+          const groupId = [currIndex,...group.map(item =>item.id)];
+          const groupName = [currgroup.map(item =>item.groupName)[0],...group.map(item =>item.groupName)];
+          this.setData({
+            orgList: groupName,
+            orgIds:groupId,
+            orgIndex: 0 // 设置默认索引
+          });
+        }else{
+          const groupId = [0, ...group.map(item =>item.id)];
+          const groupName = ["请选择", ...group.map(item =>item.groupName)];
+              this.setData({
+                orgList: groupName,
+                orgIds:groupId,
+                orgIndex: 0 // 设置默认索引
+              });
+         }
+      } else {
               wx.showToast({ title: message || '加载失败', icon: 'none' });
             }
       },(err)=>{
-
       });
     },
 });
