@@ -21,7 +21,11 @@ box-sizing: border-box; }
   border-radius: 16rpx;
   box-shadow: 0 8rpx 20rpx rgba(0,0,0,.08);
   overflow: hidden;
-
+}
+.mask-txt {
+  color: black; /* 文本颜色设置为黑色 */
+  font-size: 16px; /* 设置字体大小 */
+  /* 其他样式 */
 }
 .id-photo {
   width: 100%;
@@ -89,6 +93,7 @@ textarea {
   padding: 20rpx 40rpx 40rpx;
   background: #fff;
   box-shadow: 0 -4rpx 20rpx rgba(0,0,0,.05);
+  z-index: 1000;
 }
 .btn-submit {
   width: 100%;
@@ -100,7 +105,7 @@ textarea {
   color: #fff;
   background: linear-gradient(135deg, #6366F1, #A5B4FC);
   box-shadow: 0 8rpx 20rpx rgba(99,102,241,.3);
-  z-index: 1000;
+
 }
 .btn-submit[disabled] {
   background: #D1D5DB;

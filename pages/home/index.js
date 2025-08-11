@@ -13,10 +13,10 @@ Page({
     const token = wx.getStorageSync('token')
     console.log("入口的token:"+token)
     app.verifyLogin('home')
-    if(!token){
+    if(token){
      this.setUserMassge()
      }else{
-      const newmessage =  [...this.data.messages, "欢迎来的小程序，来体验吧" ]
+      const newmessage =  [ "欢迎来的小程序，来体验吧" ]
       this.setData({
         messages:newmessage
       })
@@ -60,6 +60,10 @@ Page({
                   duration: 2000
                 })
               },1000);
+            })
+            const newmessage =  [ "欢迎来的小程序，来体验吧" ]
+            this.setData({
+              messages:newmessage
             })
    },
   onLoad(option){

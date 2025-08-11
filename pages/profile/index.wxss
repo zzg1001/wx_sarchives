@@ -292,3 +292,16 @@ page {
 .actions button {
   margin-right: 10px;
 }
+
+
+/* 无审批任务时的提示 */
+.empty-state {
+  color: #666;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.empty-text {
+  font-size: 16px;
+  color: #999;
+}

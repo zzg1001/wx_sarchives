@@ -13,39 +13,40 @@ Page({
   },
 
   onLoad() {
-    app.verifyLogin('profile')
+    app.verifyLogin('profile');
     // 1. 身份判断
     const role = wx.getStorageSync('role') || 'MEMBER';
     this.setData({ role });
     // 2. 我的信息
-     this.mockMyInfo();
+    this.mockMyInfo();
     
-     this.mockSubList('');
+    this.mockSubList('');
     // 3. 领导加载下属
-    if (role ==='LEADER') {
-       this.mockApprovalList()// 新增审批列表
-       
+    if (role === 'LEADER') {
+      this.mockApprovalList(); // 新增审批列表
     }
   },
 
   onShow() {
-      
- },
-
-  // 切换标签
-  switchTab(e) {
     const role = wx.getStorageSync('role') || 'MEMBER';
-    this.setData({ currentTab: e.currentTarget.dataset.tab });
-    if (e.currentTarget.dataset.tab === 'sub') {
-      this.mockSubList('')
-      this.setData({ currentSubId: null, searchQuery: '' }); // 重置搜索结果和当前展开的下属成员ID
+    if (role === 'LEADER') {
+      this.mockApprovalList(); // 新增审批列表
     }
-        // 3. 领导加载下属
-        if (role ==='LEADER') {
-          this.mockApprovalList()// 新增审批列表
-          
-       }
   },
+
+// 切换标签
+switchTab(e) {
+  const role = wx.getStorageSync('role') || 'MEMBER';
+  this.setData({ currentTab: e.currentTarget.dataset.tab });
+  if (e.currentTarget.dataset.tab === 'sub') {
+    this.mockSubList('');
+    this.setData({ currentSubId: null, searchQuery: '' }); // 重置搜索结果和当前展开的下属成员ID
+  }
+  // 3. 领导加载下属
+  if (role === 'LEADER' && e.currentTarget.dataset.tab === 'approval') {
+    this.mockApprovalList(); // 新增审批列表
+  }
+},
 
   // 展开/收起盟员详细信息
   toggleSubDetail(e) {
@@ -68,77 +69,89 @@ Page({
 
   },
 
-  // 单个审批 - 同意
-  approve(e) {
-    const index = e.currentTarget.dataset.index;
-    const approvalList = this.data.approvalList;
-    approvalList[index].status = 'approved';
-    approvalList[index].showDetails = false; // 关闭详情
-    const user = approvalList[index];
-    approvalList.splice(index, 1); // 从列表中移除
-    const obj = {id:user.id,status:'PASSED'}
-    app.wxRequest(
-      'GET',
-      '/member/verify', obj,
-      (res) => {
-        console.log(" res.data"+ JSON.stringify(res.data) )
-        this.setData({ approvalList });
-        this.updateApprovalCount(); // 更新审批任务数量
+// 单个审批 - 同意
+approve(e) {
+  const index = e.currentTarget.dataset.index;
+  const approvalList = this.data.approvalList;
+  const user = approvalList[index];
+  approvalList.splice(index, 1); // 从列表中移除
+  const obj = { id: user.id, status: 'PASSED' };
+  app.wxRequest(
+    'GET',
+    '/member/verify', obj,
+    (res) => {
+      console.log("res.data" + JSON.stringify(res.data));
+      this.setData({ approvalList });
+      this.updateApprovalCount(); // 更新审批任务数量
+      wx.showToast({
+        title: '审批通过',
+        icon: 'success',
+        duration: 2000
+      });
+    },
+    (err) => {
+      setTimeout(() => {
         wx.showToast({
-          title: '审批通过',
-          icon: 'success',
-          duration: 2000
-        });
-       },
-       (err)=>{
-        setTimeout(()=>{
-          wx.showToast({
-            title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
-            icon: 'none',
-            duration: 2000
-          })
-        },1000);
-      })
-
-  },
-
-  // 单个审批 - 拒绝
-  reject(e) {
-    const index = e.currentTarget.dataset.index;
-    const approvalList = this.data.approvalList;
-    const user = approvalList[index];
-    approvalList.splice(index, 1); // 从列表中移除
-    const obj = {id:user.id,status:'REJECTED'}
-    app.wxRequest(
-      'GET',
-      '/member/verify', obj,
-      (res) => {
-        console.log(" res.data"+ JSON.stringify(res.data) )
-        this.setData({ approvalList });
-        this.updateApprovalCount(); // 更新审批任务数量
-        wx.showToast({
-          title: '审批拒绝',
+          title: '服务器响应超时，请稍后再试' + JSON.stringify(err),
           icon: 'none',
           duration: 2000
         });
-       },
-       (err)=>{
-        setTimeout(()=>{
-          wx.showToast({
-            title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
-            icon: 'none',
-            duration: 2000
-          })
-        },1000);
-      })
+      }, 1000);
+      this.setData({
+        approvalList: [...this.data.approvalList.slice(0, index), user, ...this.data.approvalList.slice(index + 1)]
+      });
+    }
+  );
+},
 
-  },
+  // 单个审批 - 拒绝
+reject(e) {
+  const index = e.currentTarget.dataset.index;
+  const approvalList = this.data.approvalList;
+  const user = approvalList[index];
+  wx.showModal({
+    title: '确认拒绝',
+    content: '您确定要拒绝这个申请吗？',
+    success: (res) => {
+      if (res.confirm) {
+        approvalList.splice(index, 1); // 从列表中移除
+        const obj = { id: user.id, status: 'REJECTED' };
+        app.wxRequest(
+          'GET',
+          '/member/verify', obj,
+          (res) => {
+            console.log("res.data" + JSON.stringify(res.data));
+            this.setData({ approvalList });
+            this.updateApprovalCount(); // 更新审批任务数量
+            wx.showToast({
+              title: '审批拒绝',
+              icon: 'none',
+              duration: 2000
+            });
+          },
+          (err) => {
+            setTimeout(() => {
+              wx.showToast({
+                title: '服务器响应超时，请稍后再试' + JSON.stringify(err),
+                icon: 'none',
+                duration: 2000
+              });
+            }, 1000);
+            this.setData({
+              approvalList: [...this.data.approvalList.slice(0, index), user, ...this.data.approvalList.slice(index + 1)]
+            });
+          }
+        );
+      }
+    }
+  });
+},
+// 更新审批任务数量
+async updateApprovalCount() {
+  const approvalCount = this.data.approvalList.length;
+  this.setData({ approvalCount });
+},
 
-  // 更新审批任务数量
- async updateApprovalCount() {
-    const approvalCount = this.data.approvalList.length;
-    this.setData({ approvalCount });
-  },
 
   // 搜索框输入事件
   onSearchInput(e) {
@@ -228,29 +241,31 @@ Page({
     })
   },
 
-  mockApprovalList() {
-    app.wxRequest(
-      'GET',
-      '/member/pendingList',null,
-      (res) => {
-          if( res.statusCode != 200){
-            wx.showToast({ title: '服务器响应超时，请稍后再试', icon: 'error', duration: 2000 });
-           }else{
-             const resl = res.data
-             const {content}  = resl                              
-            const approvalList = content.map(itm=>{return{...itm, showDetails: false}})
-             this.setData({ approvalList: approvalList })
-             this.updateApprovalCount(); // 更新审批任务数量
-           }
-         },
-       (err)=>{
-        setTimeout(()=>{
-          wx.showToast({
-            title: '服务器响应超时，请稍后再试' +  JSON.stringify(err),
-            icon: 'none',
-            duration: 2000
-          })
-        },1000);
-      })
-  }
+  // 模拟数据
+mockApprovalList() {
+  app.wxRequest(
+    'GET',
+    '/member/pendingList', null,
+    (res) => {
+      if (res.statusCode != 200) {
+        wx.showToast({ title: '服务器响应超时，请稍后再试', icon: 'error', duration: 2000 });
+      } else {
+        const resl = res.data;
+        const { content } = resl;
+        const approvalList = content.map(itm => ({ ...itm, showDetails: false }));
+        this.setData({ approvalList: approvalList });
+        this.updateApprovalCount(); // 更新审批任务数量
+      }
+    },
+    (err) => {
+      setTimeout(() => {
+        wx.showToast({
+          title: '服务器响应超时，请稍后再试' + JSON.stringify(err),
+          icon: 'none',
+          duration: 2000
+        });
+      }, 1000);
+    }
+  );
+}
 });

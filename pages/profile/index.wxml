@@ -77,26 +77,30 @@
   </scroll-view>
 
   <!-- 审批面板（领导专属） -->
-  <scroll-view wx:if="{{currentTab==='approval' && role==='LEADER'}}" class="panel approval-panel" scroll-y>
-    <!-- 审批列表 -->
-    <block wx:for="{{approvalList}}" wx:key="id">
-      <view class="approval-item" bindtap="toggleDetails" data-index="{{index}}" >
-        <view class="applicant-info">
-          <text class="applicant-name">{{item.name}}</text>
-          <text class="applicant-role">申请成为：{{item.branchStr}}</text>
-          <text class="arrow">{{item.showDetails ? 'v' : '>'}}</text>
-        </view>
-        <view class="details" wx:if="{{item.showDetails}}">
-          <view class="detail-item">姓名：{{item.name}}</view>
-          <view class="detail-item">申请成为：{{item.branchStr}}</view>
-          <view class="detail-item">申请时间：{{item.updatedDate}}</view>
-          <view class="detail-item">联系方式：{{item.phone}}</view>
-          <view class="actions">
-            <button bindtap="approve" data-index="{{index}}">同意</button>
-            <button bindtap="reject" data-index="{{index}}">拒绝</button>
-          </view>
+<scroll-view wx:if="{{currentTab==='approval' && role==='LEADER'}}" class="panel approval-panel" scroll-y>
+  <!-- 审批列表 -->
+  <block wx:for="{{approvalList}}" wx:key="id">
+    <view class="approval-item" bindtap="toggleDetails" data-index="{{index}}" >
+      <view class="applicant-info">
+        <text class="applicant-name">{{item.name}}</text>
+        <text class="applicant-role">申请成为：{{item.branchStr}}</text>
+        <text class="arrow">{{item.showDetails ? 'v' : '>'}}</text>
+      </view>
+      <view class="details" wx:if="{{item.showDetails}}">
+        <view class="detail-item">姓名：{{item.name}}</view>
+        <view class="detail-item">申请成为：{{item.branchStr}}</view>
+        <view class="detail-item">申请时间：{{item.updatedDate}}</view>
+        <view class="detail-item">联系方式：{{item.phone}}</view>
+        <view class="actions">
+          <button bindtap="approve" data-index="{{index}}">同意</button>
+          <button bindtap="reject" data-index="{{index}}">拒绝</button>
         </view>
       </view>
-    </block>
-  </scroll-view>
+    </view>
+  </block>
+  <!-- 无审批任务时的提示 -->
+  <view wx:if="{{approvalList.length === 0}}" class="empty-state">
+    <text class="empty-text">您当前没有待审批的申请。</text>
+  </view>
+</scroll-view>
 </view>
